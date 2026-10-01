@@ -1,0 +1,15 @@
+.app-layout {
+    min-height: 100vh;
+    background: #f5f6f8;
+}
+
+.body-layout {
+    display: flex;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 24px;
+    box-sizing: border-box;
+}
