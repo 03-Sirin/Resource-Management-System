@@ -16,13 +16,25 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/dashboard/dashboard')
                         .then(m => m.Dashboard)
+            },
+            {
+                path: 'users',
+                loadComponent: () =>
+                    import('./pages/users/user-list/user-list')
+                        .then(m => m.UserList)
+            },
+            {
+                path: "users/add",
+                loadComponent: () =>
+                    import('./pages/users/user-form/user-form')
+                        .then(m => m.UserForm)
             }
         ]
     },
 
     {
         path: "",
-        component: Login,
+        redirectTo: "login",
         pathMatch: "full"
     },
 ];
