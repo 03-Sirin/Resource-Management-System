@@ -8,15 +8,38 @@
     align-items: center;
     justify-content: space-between;
 
+    position: sticky;
+    top: 0;
+    z-index: 40;
     box-sizing: border-box;
 }
 
-.title {
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-left h2 {
+    margin: 0;
     font-size: 20px;
     font-weight: 600;
     color: #1f2937;
 }
 
+/* Hamburger button */
+.menu-button {
+    display: none;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+    color: #1f2937;
+    line-height: 1;
+}
+
+/* User section */
 .user-section {
     display: flex;
     align-items: center;
@@ -35,8 +58,28 @@
     background: #1f2937;
     color: white;
     cursor: pointer;
+    font-size: 14px;
 }
 
 .user-section button:hover {
     background: #374151;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .header {
+        padding: 0 16px;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .header-left h2 {
+        font-size: 18px;
+    }
+
+    .user-section span {
+        display: none;
+    }
 }

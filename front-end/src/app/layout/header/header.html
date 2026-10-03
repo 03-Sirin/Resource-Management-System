@@ -1,10 +1,24 @@
 <header class="header">
 
-    <h2>Resource Management</h2>
+    <div class="header-left">
+
+        <button
+            class="menu-button"
+            type="button"
+            (click)="menuClick.emit()">
+            ☰
+        </button>
+
+        <h2>Resource Management</h2>
+
+    </div>
 
     <div class="user-section">
+
         <span>Welcome, User</span>
-        <button>Logout</button>
+
+        <button type="button">Logout</button>
+
     </div>
 
 </header>
