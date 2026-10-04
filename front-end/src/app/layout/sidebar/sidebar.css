@@ -4,6 +4,15 @@
     background: #1f2937;
     padding: 20px 12px;
     box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
 .logo {
@@ -39,4 +48,25 @@
     background: #4b5563;
     color: white;
     font-weight: 500;
+}
+
+/* Responsive Mobile Drawer */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        height: 100vh;
+        z-index: 1001;
+        box-shadow: none;
+        transform: translateX(-100%);
+        transition: transform 0.28s ease-in-out;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+    }
 }

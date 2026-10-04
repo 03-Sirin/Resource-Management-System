@@ -9,4 +9,14 @@ import { Sidebar } from '../sidebar/sidebar';
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
-export class Layout { }
+export class Layout {
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar() {
+    this.sidebarOpen = false;
+  }
+}
