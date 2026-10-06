@@ -28,7 +28,51 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/users/user-form/user-form')
                         .then(m => m.UserForm)
+            },
+            {
+                path:"users/edit/:id",
+                loadComponent:()=>
+                import('./pages/users/user-form/user-form')
+                .then(m=>m.UserForm)
+            },
+            {
+                path: 'users/:id',
+                loadComponent: () =>
+                    import('./pages/users/user-details/user-details')
+                    .then(m => m.UserDetails)
+            },
+            {
+                path: 'projects',
+                loadComponent: () =>
+                    import('./pages/projects/project-list/project-list')
+                        .then(m => m.ProjectList)
+            },
+            {
+                path: 'projects/add',
+                loadComponent: () =>
+                    import('./pages/projects/project-form/project-form')
+                        .then(m => m.ProjectForm)
+            },
+            {
+                path: 'projects/edit/:id',
+                loadComponent: () =>
+                    import('./pages/projects/project-form/project-form')
+                        .then(m => m.ProjectForm)
+            },
+            {
+                path: 'projects/:id',
+                loadComponent: () =>
+                    import('./pages/projects/project-details/project-details')
+                        .then(m => m.ProjectDetails)
+            },
+            {
+                path: 'projects/edit/:id',
+                loadComponent: () =>
+                import('./pages/projects/project-form/project-form')
+                .then(m => m.ProjectForm)
             }
+
+
         ]
     },
 
