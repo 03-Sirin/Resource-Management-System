@@ -2,8 +2,12 @@
 
     <div class="page-header">
         <div>
-            <h1>Add User</h1>
-            <p>Create a new employee account</p>
+            <h1>{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
+            <p>
+                {{ isEditMode
+                    ? 'Update user information'
+                    : 'Create a new employee account' }}
+            </p>
         </div>
     </div>
 
@@ -120,7 +124,7 @@
                 </button>
 
                 <button type="submit" class="save-button">
-                    Save User
+                    {{ isEditMode ? 'Update User' : 'Save User' }}
                 </button>
 
             </div>

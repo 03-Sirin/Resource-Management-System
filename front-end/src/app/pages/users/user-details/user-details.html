@@ -1,0 +1,79 @@
+<div class="user-details-page">
+
+  @if (user) {
+
+    <div class="page-header">
+
+      <div>
+        <h1>User Details</h1>
+        <p>View user information</p>
+      </div>
+
+      <div class="header-actions">
+
+        <button
+          class="back-button"
+          (click)="goBack()">
+          Back
+        </button>
+
+        <a
+          class="edit-button"
+          [routerLink]="['/users/edit', user.id]">
+          Edit
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="details-card">
+
+      <div class="detail-item">
+        <span class="label">Name</span>
+        <span class="value">{{ user.firstName }} {{user.lastName}}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Role</span>
+        <span class="value">{{ user.role }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Project</span>
+        <!-- <span class="value">{{ user.project }}</span> -->
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Reporting Manager</span>
+        <!-- <span class="value">{{  }}</span> -->
+      </div>
+
+      <div class="detail-item">
+        <span class="label">Status</span>
+
+        <span
+          class="status"
+          [class.active]="user.status === 'Active'"
+          [class.inactive]="user.status === 'Inactive'">
+          {{ user.status }}
+        </span>
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <div class="not-found">
+      User not found.
+    </div>
+
+  }
+
+</div>

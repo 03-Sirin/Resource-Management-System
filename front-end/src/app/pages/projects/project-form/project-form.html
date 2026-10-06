@@ -1,0 +1,143 @@
+<div class="project-form-page">
+
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit Project' : 'Add Project' }}</h1>
+
+    <p>
+    {{ isEditMode
+        ? 'Update project information'
+        : 'Create a new project' }}
+    </p>
+    </div>
+  </div>
+
+  <div class="form-card">
+
+    <form
+      [formGroup]="projectForm"
+      (ngSubmit)="saveProject()">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label for="name">Project Name *</label>
+
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Enter project name"
+          />
+
+          @if (
+            projectForm.controls['name'].touched &&
+            projectForm.controls['name'].invalid
+          ) {
+            <small>Project name is required</small>
+          }
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="manager">Project Manager *</label>
+
+          <input
+            id="manager"
+            type="text"
+            formControlName="manager"
+            placeholder="Enter project manager"
+          />
+
+          @if (
+            projectForm.controls['manager'].touched &&
+            projectForm.controls['manager'].invalid
+          ) {
+            <small>Project manager is required</small>
+          }
+
+        </div>
+
+        <div class="form-group full-width">
+
+          <label for="description">Description *</label>
+
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Enter project description">
+          </textarea>
+
+          @if (
+            projectForm.controls['description'].touched &&
+            projectForm.controls['description'].invalid
+          ) {
+            <small>Description is required</small>
+          }
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="startDate">Start Date *</label>
+
+          <input
+            id="startDate"
+            type="date"
+            formControlName="startDate"
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="endDate">End Date *</label>
+
+          <input
+            id="endDate"
+            type="date"
+            formControlName="endDate"
+          />
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="status">Status *</label>
+
+          <select
+            id="status"
+            formControlName="status">
+
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Inactive">Inactive</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button type="submit" class="save-button">
+          {{ isEditMode ? 'Update Project' : 'Save Project' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
