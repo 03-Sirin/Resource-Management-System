@@ -1,48 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink
-} from '@angular/router';
-
-import { User } from '../../../core/models/user/user.interface';
-import { UsersService } from '../../../core/services/user/user';
-
+import { Component } from '@angular/core';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../../core/models/user.interface';
+import { UsersService } from '../../../core/services/user';
 @Component({
   selector: 'app-user-details',
   imports: [RouterLink],
   templateUrl: './user-details.html',
   styleUrl: './user-details.css',
 })
-export class UserDetails implements OnInit {
-
+export class UserDetails {
   user: User | undefined;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private usersService: UsersService
-  ) {}
-
-  ngOnInit(): void {
-
+  constructor(private route: ActivatedRoute, private router: Router,
+    private usersService: UsersService) {
     const id = Number(
       this.route.snapshot.paramMap.get('id')
     );
 
-    this.usersService.getUserById(id).subscribe({
-      next: (user) => {
-        this.user = user;
-      },
-
-      error: (error) => {
-        console.error('Failed to load user:', error);
-        this.user = undefined;
-      }
-    });
+    this.user = this.usersService.getUserById(id);
   }
 
-  goBack(): void {
+  goBack() {
     this.router.navigate(['/users']);
   }
+
 }

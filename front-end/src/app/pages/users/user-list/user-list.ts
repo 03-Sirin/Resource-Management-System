@@ -1,156 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
-import { UsersService } from '../../../core/services/user/user';
-import { User } from '../../../core/models/user/user.interface';
-
+import { UsersService } from '../../../core/services/user';
+import { User } from '../../../core/models/user.interface';
 @Component({
   selector: 'app-user-list',
   imports: [FormsModule, RouterLink],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
-export class UserList implements OnInit {
-
+export class UserList {
   searchText = '';
-
-  selectedRole = '';
-
-  users: User[] = [];
-
-  constructor(
-    private userService: UsersService
-  ) {}
-
-
-  ngOnInit(): void {
-
-    this.loadUsers();
-
+  selectedRole = 'All';
+  users: User[]=[];
+  constructor(private userService: UsersService) {
+    this.users = this.userService.getUsers();
   }
 
 
-  loadUsers(): void {
+  get filteredUsers():User[] {
+    return this.users.filter(user => {
 
-    this.userService.getUsers().subscribe({
+      const matchesSearch =
+        user.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(this.searchText.toLowerCase())||
+        user.email.toLowerCase().includes(this.searchText.toLowerCase());
 
-      next: (users) => {
-        console.log('Users from backend:', users);
-        this.users = users;
+      const matchesRole =
+        this.selectedRole === 'All' ||
+        user.role === this.selectedRole;
 
-      },
-
-      error: (error) => {
-
-        console.error(
-          'Failed to load users:',
-          error
-        );
-
-      }
-
+      return matchesSearch && matchesRole;
     });
-
   }
 
-
-  // get filteredUsers(): User[] {
-
-  //   const search =
-  //     this.searchText
-  //       .toLowerCase()
-  //       .trim();
-
-  //   return this.users.filter(user => {
-
-  //     const matchesSearch =
-  //       user.employeeCode
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.firstName
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.lastName
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.email
-  //         .toLowerCase()
-  //         .includes(search);
-
-
-  //     const matchesRole =
-  //       this.selectedRole === 'All' ||
-  //       user.role === this.selectedRole;
-
-
-  //     return matchesSearch && matchesRole;
-
-  //   });
-
-  // }
-
-  get filteredUsers(): User[] {
-
-  const search = this.searchText.toLowerCase().trim();
-
-  const result = this.users.filter(user => {
-
-    const matchesSearch =
-      user.employeeCode.toLowerCase().includes(search) ||
-      user.firstName.toLowerCase().includes(search) ||
-      user.lastName.toLowerCase().includes(search) ||
-      user.email.toLowerCase().includes(search);
-
-    const matchesRole =
-      this.selectedRole === '' ||
-      user.role === this.selectedRole;
-
-    return matchesSearch && matchesRole;
-  });
-
-  console.log('Filtered users:', result);
-
-  return result;
+  toggleStatus(id: number) {
+  this.userService.toggleUserStatus(id);
 }
-
-  toggleStatus(user: User): void {
-
-    const newStatus =
-      user.status === 'ACTIVE'
-        ? 'INACTIVE'
-        : 'ACTIVE';
-
-
-    const request = {
-      status: newStatus
-    };
-
-
-    this.userService
-      .updateUserStatus(user.id, request)
-      .subscribe({
-
-        next: (updatedUser) => {
-
-          user.status = updatedUser.status;
-
-        },
-
-        error: (error) => {
-
-          console.error(
-            'Failed to update user status:',
-            error
-          );
-
-        }
-
-      });
-
-  }
 
 }

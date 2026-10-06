@@ -1,138 +1,79 @@
 <div class="user-details-page">
 
-    @if (user) {
+  @if (user) {
 
-        <div class="page-header">
+    <div class="page-header">
 
-            <div>
-                <h1>User Details</h1>
-                <p>View user information</p>
-            </div>
+      <div>
+        <h1>User Details</h1>
+        <p>View user information</p>
+      </div>
 
-            <div class="header-actions">
+      <div class="header-actions">
 
-                <button
-                    class="back-button"
-                    (click)="goBack()">
-                    Back
-                </button>
+        <button
+          class="back-button"
+          (click)="goBack()">
+          Back
+        </button>
 
-                <a
-                    class="edit-button"
-                    [routerLink]="['/users/edit', user.id]">
-                    Edit
-                </a>
+        <a
+          class="edit-button"
+          [routerLink]="['/users/edit', user.id]">
+          Edit
+        </a>
 
-            </div>
+      </div>
 
-        </div>
+    </div>
 
+    <div class="details-card">
 
-        <div class="details-card">
+      <div class="detail-item">
+        <span class="label">Name</span>
+        <span class="value">{{ user.firstName }} {{user.lastName}}</span>
+      </div>
 
-            <div class="detail-item">
+      <div class="detail-item">
+        <span class="label">Email</span>
+        <span class="value">{{ user.email }}</span>
+      </div>
 
-                <span class="label">
-                    Employee Code
-                </span>
+      <div class="detail-item">
+        <span class="label">Role</span>
+        <span class="value">{{ user.role }}</span>
+      </div>
 
-                <span class="value">
-                    {{ user.employeeCode }}
-                </span>
+      <div class="detail-item">
+        <span class="label">Project</span>
+        <!-- <span class="value">{{ user.project }}</span> -->
+      </div>
 
-            </div>
+      <div class="detail-item">
+        <span class="label">Reporting Manager</span>
+        <!-- <span class="value">{{  }}</span> -->
+      </div>
 
+      <div class="detail-item">
+        <span class="label">Status</span>
 
-            <div class="detail-item">
+        <span
+          class="status"
+          [class.active]="user.status === 'Active'"
+          [class.inactive]="user.status === 'Inactive'">
+          {{ user.status }}
+        </span>
 
-                <span class="label">
-                    First Name
-                </span>
+      </div>
 
-                <span class="value">
-                    {{ user.firstName }}
-                </span>
+    </div>
 
-            </div>
+  } @else {
 
+    <div class="not-found">
+      User not found.
+    </div>
 
-            <div class="detail-item">
-
-                <span class="label">
-                    Last Name
-                </span>
-
-                <span class="value">
-                    {{ user.lastName || '-' }}
-                </span>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <span class="label">
-                    Email
-                </span>
-
-                <span class="value">
-                    {{ user.email }}
-                </span>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <span class="label">
-                    Phone
-                </span>
-
-                <span class="value">
-                    {{ user.phone || '-' }}
-                </span>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <span class="label">
-                    Role
-                </span>
-
-                <span class="value">
-                    {{ user.role }}
-                </span>
-
-            </div>
-
-
-            <div class="detail-item">
-
-                <span class="label">
-                    Status
-                </span>
-
-                <span
-                    class="status"
-                    [class.active]="user.status === 'ACTIVE'"
-                    [class.inactive]="user.status === 'INACTIVE'">
-
-                    {{ user.status }}
-
-                </span>
-
-            </div>
-
-        </div>
-
-    } @else {
-
-        <div class="not-found">
-            User not found.
-        </div>
-
-    }
+  }
 
 </div>

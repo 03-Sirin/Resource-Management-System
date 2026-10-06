@@ -1,61 +1,29 @@
 <div class="user-page">
 
     <div class="page-header">
-
         <div>
             <h1>Users</h1>
             <p>Manage employees and their access</p>
         </div>
 
-        <button
-            class="add-button"
-            routerLink="/users/add">
-
+        <button class="add-button" routerLink="/users/add">
             + Add User
-
         </button>
-
     </div>
-
 
     <div class="filters">
 
-        <input
-            type="text"
-            [(ngModel)]="searchText"
-            placeholder="Search by employee code, name or email" />
-
+        <input type="text" [(ngModel)]="searchText" placeholder="Search by name or email" />
 
         <select [(ngModel)]="selectedRole">
-
-            <option value="">
-                All Roles
-            </option>
-
-            <option value="EMPLOYEE">
-                Employee
-            </option>
-
-            <option value="PROJECT_LEAD">
-                Project Lead
-            </option>
-
-            <option value="ADMIN">
-                Administrator
-            </option>
-
-            <option value="INVENTORY_MANAGER">
-                Inventory Manager
-            </option>
-
-            <option value="AUDITOR">
-                Auditor
-            </option>
-
+            <option value="All">All Roles</option>
+            <option value="EMPLOYEE">Employee</option>
+            <option value="PROJECT_LEAD">Project Lead</option>
+            <option value="ADMIN">Admin</option>
+            <option value="INVENTORY_MANAGER">Inventory Manager</option>
         </select>
 
     </div>
-
 
     <div class="table-container">
 
@@ -63,83 +31,42 @@
 
             <thead>
                 <tr>
-                    <th>Employee Code</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone</th>
                     <th>Role</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
 
-
             <tbody>
 
                 @for (user of filteredUsers; track user.id) {
 
-                    <tr>
+                <tr>
 
-                        <td>
-                            {{ user.employeeCode }}
-                        </td>
+                    <td>{{ user.firstName }} {{user.lastName}}</td>
 
-                        <td>
-                            {{ user.firstName }}
-                            {{ user.lastName }}
-                        </td>
+                    <td>{{ user.email }}</td>
 
-                        <td>
-                            {{ user.email }}
-                        </td>
+                    <td>{{ user.role }}</td>
 
-                        <td>
-                            {{ user.phone || '-' }}
-                        </td>
+                    <td>
+                        <span class="status" [class.active]="user.status === 'Active'"
+                            [class.inactive]="user.status === 'Inactive'">
+                            {{ user.status }}
+                        </span>
+                    </td>
 
-                        <td>
-                            {{ user.role }}
-                        </td>
+                    <td class="actions">
+                        <button [routerLink]="['/users', user.id]">View</button>
+                        <button [routerLink]="['/users/edit', user.id]">Edit</button>
+                        <button (click)="toggleStatus(user.id)">
+                            {{ user.status === 'Active' ? 'Disable' : 'Enable' }}
+                        </button>
+                    </td>
 
-                        <td>
-
-                            <span
-                                class="status"
-                                [class.active]="user.status === 'ACTIVE'"
-                                [class.inactive]="user.status === 'INACTIVE'">
-
-                                {{ user.status }}
-
-                            </span>
-
-                        </td>
-
-                        <td class="actions">
-
-                            <button
-                                [routerLink]="['/users', user.id]">
-                                View
-                            </button>
-
-                            <button
-                                [routerLink]="['/users/edit', user.id]">
-                                Edit
-                            </button>
-
-                            <button
-                                (click)="toggleStatus(user)">
-
-                                {{
-                                    user.status === 'ACTIVE'
-                                        ? 'Disable'
-                                        : 'Enable'
-                                }}
-
-                            </button>
-
-                        </td>
-
-                    </tr>
+                </tr>
 
                 }
 
