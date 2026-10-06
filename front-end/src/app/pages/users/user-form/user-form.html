@@ -1,0 +1,318 @@
+<div class="user-form-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>
+                {{ isEditMode ? 'Edit User' : 'Add User' }}
+            </h1>
+
+            <p>
+                {{
+                    isEditMode
+                        ? 'Update user information'
+                        : 'Create a new employee account'
+                }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <form
+            [formGroup]="userForm"
+            (ngSubmit)="saveUser()">
+
+            <div class="form-grid">
+
+
+                <!-- Employee Code -->
+
+                <div class="form-group">
+
+                    <label for="employeeCode">
+                        Employee Code *
+                    </label>
+
+                    <input
+                        id="employeeCode"
+                        type="text"
+                        formControlName="employeeCode"
+                        placeholder="Enter employee code" />
+
+                    @if (
+                        userForm.controls['employeeCode'].touched &&
+                        userForm.controls['employeeCode'].invalid
+                    ) {
+
+                        <small>
+                            Employee code is required
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- First Name -->
+
+                <div class="form-group">
+
+                    <label for="firstName">
+                        First Name *
+                    </label>
+
+                    <input
+                        id="firstName"
+                        type="text"
+                        formControlName="firstName"
+                        placeholder="Enter first name" />
+
+                    @if (
+                        userForm.controls['firstName'].touched &&
+                        userForm.controls['firstName'].invalid
+                    ) {
+
+                        <small>
+                            First name is required
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- Last Name -->
+
+                <div class="form-group">
+
+                    <label for="lastName">
+                        Last Name
+                    </label>
+
+                    <input
+                        id="lastName"
+                        type="text"
+                        formControlName="lastName"
+                        placeholder="Enter last name" />
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email *
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        formControlName="email"
+                        placeholder="Enter email" />
+
+                    @if (
+                        userForm.controls['email'].touched &&
+                        userForm.controls['email'].errors?.['required']
+                    ) {
+
+                        <small>
+                            Email is required
+                        </small>
+
+                    }
+
+                    @if (
+                        userForm.controls['email'].touched &&
+                        userForm.controls['email'].errors?.['email']
+                    ) {
+
+                        <small>
+                            Enter a valid email
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- Password - Add only -->
+
+                @if (!isEditMode) {
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password *
+                        </label>
+
+                        <input
+                            id="password"
+                            type="password"
+                            formControlName="password"
+                            placeholder="Enter password" />
+
+                        @if (
+                            userForm.controls['password'].touched &&
+                            userForm.controls['password'].errors?.['required']
+                        ) {
+
+                            <small>
+                                Password is required
+                            </small>
+
+                        }
+
+                        @if (
+                            userForm.controls['password'].touched &&
+                            userForm.controls['password'].errors?.['minlength']
+                        ) {
+
+                            <small>
+                                Password must be at least 8 characters
+                            </small>
+
+                        }
+
+                    </div>
+
+                }
+
+
+                <!-- Phone -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="tel"
+                        formControlName="phone"
+                        placeholder="Enter phone number" />
+
+                </div>
+
+
+                <!-- Role -->
+
+                <div class="form-group">
+
+                    <label for="role">
+                        Role *
+                    </label>
+
+                    <select
+                        id="role"
+                        formControlName="role">
+
+                        <option value="">
+                            Select role
+                        </option>
+
+                        <option value="EMPLOYEE">
+                            Employee
+                        </option>
+
+                        <option value="PROJECT_LEAD">
+                            Project Lead
+                        </option>
+
+                        <option value="ADMIN">
+                            Administrator
+                        </option>
+
+                        <option value="INVENTORY_MANAGER">
+                            Inventory Manager
+                        </option>
+
+                        <option value="AUDITOR">
+                            Auditor
+                        </option>
+
+                    </select>
+
+                    @if (
+                        userForm.controls['role'].touched &&
+                        userForm.controls['role'].invalid
+                    ) {
+
+                        <small>
+                            Role is required
+                        </small>
+
+                    }
+
+                </div>
+
+
+                <!-- Status - Edit only -->
+
+                @if (isEditMode) {
+
+                    <div class="form-group">
+
+                        <label for="status">
+                            Status *
+                        </label>
+
+                        <select
+                            id="status"
+                            formControlName="status">
+
+                            <option value="ACTIVE">
+                                Active
+                            </option>
+
+                            <option value="INACTIVE">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    (click)="cancel()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-button">
+
+                    {{
+                        isEditMode
+                            ? 'Update User'
+                            : 'Save User'
+                    }}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
