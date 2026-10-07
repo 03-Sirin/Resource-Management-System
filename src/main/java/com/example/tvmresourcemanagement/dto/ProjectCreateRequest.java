@@ -1,11 +1,9 @@
 package com.example.tvmresourcemanagement.dto;
 
-import com.example.tvmresourcemanagement.enums.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Getter
@@ -23,6 +21,5 @@ public class ProjectCreateRequest {
     @NotNull
     private LocalDate startDate;
 
-    @NotNull
     private LocalDate endDate;
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -54,10 +55,11 @@ public class ProjectController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<ProjectResponse> updateProjectStatus(
             @PathVariable Long id,
-            @RequestParam String status) {
+            @RequestParam String status,
+            @RequestParam(required = false) LocalDate endDate) {
 
         return ResponseEntity.ok(
-                projectService.updateProjectStatus(id, status)
+                projectService.updateProjectStatus(id, status, endDate)
         );
     }
 }

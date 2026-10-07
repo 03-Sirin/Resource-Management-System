@@ -4,6 +4,8 @@ import com.example.tvmresourcemanagement.dto.ProjectCreateRequest;
 import com.example.tvmresourcemanagement.dto.ProjectResponse;
 import com.example.tvmresourcemanagement.dto.ProjectUpdateRequest;
 
+import java.time.LocalDate;
+
 import java.util.List;
 
 public interface ProjectService {
@@ -16,5 +18,5 @@ public interface ProjectService {
 
     ProjectResponse updateProject(Long id, ProjectUpdateRequest request);
 
-    ProjectResponse updateProjectStatus(Long id, String status);
+    ProjectResponse updateProjectStatus(Long id, String status, LocalDate endDate);
 }

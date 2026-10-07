@@ -31,7 +31,7 @@ public class Project {
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)

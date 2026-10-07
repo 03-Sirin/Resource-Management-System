@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
+                .endDate(null)
                 .status(ProjectStatus.ACTIVE)
                 .build();
 
@@ -74,13 +75,19 @@ public class ProjectServiceImpl implements ProjectService {
         project.setName(request.getName());
         project.setDescription(request.getDescription());
         project.setStartDate(request.getStartDate());
-        project.setEndDate(request.getEndDate());
+        if (project.getStatus() == ProjectStatus.COMPLETED && request.getEndDate() == null) {
+            throw new IllegalArgumentException("End date is required for a completed project");
+        }
+
+        project.setEndDate(project.getStatus() == ProjectStatus.COMPLETED
+                ? request.getEndDate()
+                : null);
 
         return mapToResponse(projectRepository.save(project));
     }
 
     @Override
-    public ProjectResponse updateProjectStatus(Long id, String status) {
+    public ProjectResponse updateProjectStatus(Long id, String status, LocalDate endDate) {
 
         Project project = projectRepository.findById(id)
                 .orElseThrow(() ->
@@ -92,6 +99,15 @@ public class ProjectServiceImpl implements ProjectService {
             projectStatus = ProjectStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid project status: " + status);
+        }
+
+        if (projectStatus == ProjectStatus.COMPLETED) {
+            if (endDate == null) {
+                throw new IllegalArgumentException("End date is required when completing a project");
+            }
+            project.setEndDate(endDate);
+        } else {
+            project.setEndDate(null);
         }
 
         project.setStatus(projectStatus);
