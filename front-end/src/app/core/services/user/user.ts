@@ -6,13 +6,14 @@ import { User } from '../../models/user/user.interface';
 import { UserCreateRequest } from '../../models/user/user.create.interface';
 import { UserUpdateRequest } from '../../models/user/user.update.interface';
 import { UserStatusUpdateRequest } from '../../models/user/user.status.update.interface';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  private readonly apiUrl = 'http://localhost:8080/api/users';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient
@@ -43,7 +44,7 @@ export class UsersService {
   ): Observable<User> {
 
     return this.http.post<User>(
-      this.apiUrl,
+     `${this.apiUrl}`,
       request
     );
 

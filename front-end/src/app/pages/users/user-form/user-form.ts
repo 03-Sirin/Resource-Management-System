@@ -1,9 +1,23 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, } from '@angular/router';
-import { UsersService } from '../../../core/services/user';
-import { User } from '../../../core/models/user.interface';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
+
+import { UsersService } from '../../../core/services/user/user';
+
+import { User } from '../../../core/models/user/user.interface';
+
+import { UserCreateRequest } from '../../../core/models/user/user.create.interface';
+
+import { UserUpdateRequest } from '../../../core/models/user/user.update.interface';
 
 @Component({
   selector: 'app-user-form',
@@ -13,68 +27,173 @@ import { User } from '../../../core/models/user.interface';
 })
 export class UserForm {
 
-  userForm !:FormGroup;
+  userForm!: FormGroup;
+
   userId: number | null = null;
+
   isEditMode = false;
-  
+
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route:ActivatedRoute,
-    private usersService:UsersService
-  ) { 
+    private route: ActivatedRoute,
+    private usersService: UsersService
+  ) {
 
-  this.userForm = this.fb.group({
-    name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    role: ['', Validators.required],
-    project: [''],
-    reportingManager: [''],
-    status: ['Active', Validators.required]
-  });
-  const id = this.route.snapshot.paramMap.get('id');
+    this.userForm = this.fb.group({
 
-if (id) {
+      employeeCode: [
+        '',
+        Validators.required
+      ],
+
+      firstName: [
+        '',
+        Validators.required
+      ],
+
+      lastName: [
+        ''
+      ],
+
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
+
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8)
+        ]
+      ],
+
+      phone: [
+        ''
+      ],
+
+      role: [
+        '',
+        Validators.required
+      ],
+
+      status: [
+        'ACTIVE',
+        Validators.required
+      ]
+
+    });
+
+
+    const id = this.route.snapshot.paramMap.get('id');
+
+
+    if (id) {
   this.userId = Number(id);
   this.isEditMode = true;
 
-  const user: User | undefined =
-        this.usersService.getUserById(this.userId);
+  this.usersService.getUserById(this.userId).subscribe({
+    next: (user) => {
+      this.userForm.patchValue({
+        employeeCode: user.employeeCode,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        status: user.status
+      });
 
-  if (user) {
-    this.userForm.patchValue(user);
-  }
-}
-}
-
-  saveUser() {
-
-    if (this.userForm.invalid) {
-
-      this.userForm.markAllAsTouched();
-
-      return;
+      // Password is not required when editing a user
+      this.userForm.get('password')?.clearValidators();
+      this.userForm.get('password')?.updateValueAndValidity();
+    },
+    error: (error) => {
+      console.error('Failed to load user:', error);
     }
+  });
+}
 
-    const user: User = {
-      id: this.userId ?? Date.now(),
-      ...this.userForm.value
+  }
+
+
+  saveUser(): void {
+
+  if (this.userForm.invalid) {
+    this.userForm.markAllAsTouched();
+    return;
+  }
+
+  const formValue = this.userForm.value;
+
+  if (this.isEditMode && this.userId !== null) {
+
+    const userUpdateRequest: UserUpdateRequest = {
+      employeeCode: formValue.employeeCode,
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      email: formValue.email,
+      phone: formValue.phone,
+      role: formValue.role,
+      status: formValue.status
     };
 
-    if (this.isEditMode) {
+    this.usersService.updateUser(
+      this.userId,
+      userUpdateRequest
+    ).subscribe({
 
-      console.log('Updating user:', user);
+      next: (response) => {
+        console.log('User updated successfully:', response);
+        this.router.navigate(['/users']);
+      },
 
-    } else {
+      error: (error) => {
+        console.error('Failed to update user:', error);
+      }
 
-      console.log('Creating user:', user);
+    });
 
-    }
+  } else {
+
+    const userCreateRequest: UserCreateRequest = {
+      employeeCode: formValue.employeeCode,
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      email: formValue.email,
+      password: formValue.password,
+      phone: formValue.phone,
+      role: formValue.role
+    };
+
+    this.usersService.createUser(
+      userCreateRequest
+    ).subscribe({
+
+      next: (response) => {
+        console.log('User created successfully:', response);
+        this.router.navigate(['/users']);
+      },
+
+      error: (error) => {
+        console.error('Failed to create user:', error);
+      }
+
+    });
+
+  }
+}
+
+
+  cancel(): void {
 
     this.router.navigate(['/users']);
+
   }
 
-  cancel() {
-    this.router.navigate(['/users']);
-  }
 }
