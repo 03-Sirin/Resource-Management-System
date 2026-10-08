@@ -26,9 +26,12 @@ export class ProjectForm {
   ) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
+      projectCode: ['', Validators.required],
+      projectDeveloper: ['', Validators.required],
+      projectVoice: ['', Validators.required],
       description: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: [''],
       status: ['Active', Validators.required],
       manager: ['', Validators.required]
     });

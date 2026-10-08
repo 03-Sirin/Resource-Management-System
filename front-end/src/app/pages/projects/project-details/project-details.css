@@ -2,22 +2,26 @@
   width: 100%;
 }
 
+/* ---------- Header ---------- */
+
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 24px;
 }
 
 .page-header h1 {
   margin: 0;
   font-size: 28px;
+  font-weight: 600;
   color: #1f2937;
 }
 
 .page-header p {
-  margin-top: 6px;
+  margin: 6px 0 0;
   color: #6b7280;
+  font-size: 14px;
 }
 
 .header-actions {
@@ -25,62 +29,104 @@
   gap: 10px;
 }
 
+
+/* ---------- Buttons ---------- */
+
 .back-button,
 .edit-button {
+  min-width: 80px;
   padding: 10px 18px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  text-align: center;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 .back-button {
-  background: white;
+  background: #ffffff;
   border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.back-button:hover {
+  background: #f9fafb;
 }
 
 .edit-button {
   background: #1f2937;
-  color: white;
+  color: #ffffff;
+  border: 1px solid #1f2937;
 }
 
+.edit-button:hover {
+  background: #111827;
+}
+
+
+/* ---------- Details Card ---------- */
+
 .details-card {
-  background: white;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 25px;
+  border-radius: 10px;
+  padding: 24px;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 25px;
+  gap: 16px;
 }
+
+
+/* ---------- Individual Detail ---------- */
 
 .detail-item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
+  gap: 7px;
 
-.full-width {
-  grid-column: span 2;
+  padding: 14px 16px;
+
+  background: #f9fafb;
+  border: 1px solid #f1f5f9;
+  border-radius: 7px;
 }
 
 .label {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 500;
   color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .value {
   font-size: 15px;
   color: #1f2937;
   font-weight: 500;
+  line-height: 1.5;
 }
+
+
+/* ---------- Full Width ---------- */
+
+.full-width {
+  grid-column: span 2;
+}
+
+
+/* ---------- Status ---------- */
 
 .status {
   width: fit-content;
-  padding: 5px 10px;
+
+  padding: 5px 12px;
+
   border-radius: 15px;
+
   font-size: 12px;
+  font-weight: 500;
 }
 
 .status.active {
@@ -93,14 +139,20 @@
   color: #3730a3;
 }
 
+
+/* ---------- Not Found ---------- */
+
 .not-found {
-  background: white;
+  background: #ffffff;
   padding: 30px;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   color: #6b7280;
 }
 
-/* Tablet */
+
+/* ---------- Tablet ---------- */
+
 @media (max-width: 768px) {
 
   .project-details-page {
@@ -114,6 +166,7 @@
 
   .details-card {
     grid-template-columns: 1fr;
+    padding: 18px;
   }
 
   .full-width {
@@ -121,7 +174,9 @@
   }
 }
 
-/* Mobile */
+
+/* ---------- Mobile ---------- */
+
 @media (max-width: 480px) {
 
   .project-details-page {
@@ -130,6 +185,11 @@
 
   .page-header {
     flex-direction: column;
+    gap: 15px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
   }
 
   .header-actions {
@@ -139,10 +199,18 @@
   .back-button,
   .edit-button {
     flex: 1;
-    text-align: center;
   }
 
   .details-card {
-    padding: 18px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .detail-item {
+    padding: 12px;
+  }
+
+  .value {
+    font-size: 14px;
   }
 }
