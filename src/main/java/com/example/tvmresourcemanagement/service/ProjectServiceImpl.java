@@ -37,7 +37,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return mapToResponse(projectRepository.save(project));
     }
-
     @Override
     @Transactional(readOnly = true)
     public List<ProjectResponse> getAllProjects() {

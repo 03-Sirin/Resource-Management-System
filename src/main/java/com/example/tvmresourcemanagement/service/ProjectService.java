@@ -7,7 +7,6 @@ import com.example.tvmresourcemanagement.dto.ProjectUpdateRequest;
 import java.time.LocalDate;
 
 import java.util.List;
-
 public interface ProjectService {
 
     ProjectResponse createProject(ProjectCreateRequest request);
