@@ -7,7 +7,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ProjectUpdateRequest {
-
     @NotBlank
     private String projectCode;
 

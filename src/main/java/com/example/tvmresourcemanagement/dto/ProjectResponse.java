@@ -1,5 +1,4 @@
 package com.example.tvmresourcemanagement.dto;
-
 import com.example.tvmresourcemanagement.enums.ProjectStatus;
 import lombok.Builder;
 import lombok.Getter;

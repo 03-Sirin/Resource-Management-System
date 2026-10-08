@@ -12,14 +12,10 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
-
     @Override
     public void run(String... args) {
-
         for (RoleName roleName : RoleName.values()) {
-
             if (roleRepository.findByName(roleName).isEmpty()) {
-
                 roleRepository.save(
                         Role.builder()
                                 .name(roleName)

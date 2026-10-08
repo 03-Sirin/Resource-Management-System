@@ -19,7 +19,6 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(
             @Valid @RequestBody ProjectCreateRequest request) {
