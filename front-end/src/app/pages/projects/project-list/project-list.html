@@ -21,7 +21,10 @@
 
       <thead>
         <tr>
+          <th>Project Code</th>
           <th>Project Name</th>
+          <th>Developer</th>
+          <th>Voice</th>
           <th>Description</th>
           <th>Manager</th>
           <th>Start Date</th>
@@ -37,7 +40,13 @@
 
           <tr>
 
+            <td>{{ project.projectCode }}</td>
+
             <td>{{ project.name }}</td>
+
+            <td>{{ project.projectDeveloper }}</td>
+
+            <td>{{ project.projectVoice }}</td>
 
             <td>{{ project.description }}</td>
 
@@ -45,14 +54,18 @@
 
             <td>{{ project.startDate }}</td>
 
-            <td>{{ project.endDate }}</td>
+            <td>
+              {{ project.endDate || '-' }}
+            </td>
 
             <td>
               <span
                 class="status"
                 [class.active]="project.status === 'Active'"
                 [class.completed]="project.status === 'Completed'">
+
                 {{ project.status }}
+
               </span>
             </td>
 
