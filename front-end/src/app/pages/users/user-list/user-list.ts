@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -15,9 +15,9 @@ export class UserList implements OnInit {
 
   searchText = '';
 
-  selectedRole = '';
+  selectedRole = 'All';
 
-  users: User[] = [];
+  users = signal<User[]>([]);
 
   constructor(
     private userService: UsersService
@@ -36,8 +36,8 @@ export class UserList implements OnInit {
     this.userService.getUsers().subscribe({
 
       next: (users) => {
-        console.log('Users from backend:', users);
-        this.users = users;
+
+        this.users.set(users);
 
       },
 
@@ -55,67 +55,44 @@ export class UserList implements OnInit {
   }
 
 
-  // get filteredUsers(): User[] {
-
-  //   const search =
-  //     this.searchText
-  //       .toLowerCase()
-  //       .trim();
-
-  //   return this.users.filter(user => {
-
-  //     const matchesSearch =
-  //       user.employeeCode
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.firstName
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.lastName
-  //         .toLowerCase()
-  //         .includes(search) ||
-
-  //       user.email
-  //         .toLowerCase()
-  //         .includes(search);
-
-
-  //     const matchesRole =
-  //       this.selectedRole === 'All' ||
-  //       user.role === this.selectedRole;
-
-
-  //     return matchesSearch && matchesRole;
-
-  //   });
-
-  // }
-
   get filteredUsers(): User[] {
 
-  const search = this.searchText.toLowerCase().trim();
+    const search =
+      this.searchText
+        .toLowerCase()
+        .trim();
 
-  const result = this.users.filter(user => {
+    return this.users().filter(user => {
 
-    const matchesSearch =
-      user.employeeCode.toLowerCase().includes(search) ||
-      user.firstName.toLowerCase().includes(search) ||
-      user.lastName.toLowerCase().includes(search) ||
-      user.email.toLowerCase().includes(search);
+      const matchesSearch =
+        user.employeeCode
+          .toLowerCase()
+          .includes(search) ||
 
-    const matchesRole =
-      this.selectedRole === '' ||
-      user.role === this.selectedRole;
+        user.firstName
+          .toLowerCase()
+          .includes(search) ||
 
-    return matchesSearch && matchesRole;
-  });
+        user.lastName
+          .toLowerCase()
+          .includes(search) ||
 
-  console.log('Filtered users:', result);
+        user.email
+          .toLowerCase()
+          .includes(search);
 
-  return result;
-}
+
+      const matchesRole =
+        this.selectedRole === 'All' ||
+        user.role === this.selectedRole;
+
+
+      return matchesSearch && matchesRole;
+
+    });
+
+  }
+
 
   toggleStatus(user: User): void {
 
@@ -136,7 +113,11 @@ export class UserList implements OnInit {
 
         next: (updatedUser) => {
 
-          user.status = updatedUser.status;
+          this.users.update(users =>
+            users.map(user =>
+              user.id === updatedUser.id ? updatedUser : user
+            )
+          );
 
         },
 
@@ -148,7 +129,6 @@ export class UserList implements OnInit {
           );
 
         }
-
       });
 
   }

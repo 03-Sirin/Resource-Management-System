@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit, signal } from '@angular/core';
 import {
   ActivatedRoute,
   Router,
@@ -16,7 +17,9 @@ import { UsersService } from '../../../core/services/user/user';
 })
 export class UserDetails implements OnInit {
 
-  user: User | undefined;
+  user = signal<User | null>(null);
+  loading = signal(true);
+  loadError = signal<string | null>(null);
 
   constructor(
     private route: ActivatedRoute,
@@ -26,19 +29,35 @@ export class UserDetails implements OnInit {
 
   ngOnInit(): void {
 
-    const id = Number(
-      this.route.snapshot.paramMap.get('id')
-    );
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      this.loading.set(false);
+      this.loadError.set('User not found.');
+      return;
+    }
 
     this.usersService.getUserById(id).subscribe({
+
       next: (user) => {
-        this.user = user;
+        this.user.set(user);
+        this.loading.set(false);
       },
 
       error: (error) => {
-        console.error('Failed to load user:', error);
-        this.user = undefined;
+        console.error(
+          'Failed to load user:',
+          error
+        );
+
+        this.loading.set(false);
+        this.loadError.set(
+          error instanceof HttpErrorResponse && error.status === 404
+            ? 'User not found.'
+            : 'Could not load user details. Please try again.'
+        );
       }
+
     });
   }
 

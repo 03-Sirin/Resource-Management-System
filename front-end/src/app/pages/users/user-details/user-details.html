@@ -1,6 +1,12 @@
 <div class="user-details-page">
 
-    @if (user) {
+    @if (loading()) {
+
+        <div class="loading">
+            Loading user details...
+        </div>
+
+    } @else if (user(); as user) {
 
         <div class="page-header">
 
@@ -130,7 +136,7 @@
     } @else {
 
         <div class="not-found">
-            User not found.
+            {{ loadError() }}
         </div>
 
     }
