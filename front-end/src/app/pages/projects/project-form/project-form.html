@@ -44,23 +44,23 @@
         </div>
 
 
-        <!-- Project Code -->
+        <!-- Company Name -->
         <div class="form-group">
 
-          <label for="projectCode">Project Code *</label>
+          <label for="companyName">Company Name *</label>
 
           <input
-            id="projectCode"
+            id="companyName"
             type="text"
-            formControlName="projectCode"
-            placeholder="Enter project code"
+            formControlName="companyName"
+            placeholder="Enter company name"
           />
 
           @if (
-            projectForm.controls['projectCode'].touched &&
-            projectForm.controls['projectCode'].invalid
+            projectForm.controls['companyName'].touched &&
+            projectForm.controls['companyName'].invalid
           ) {
-            <small>Project code is required</small>
+            <small>Company name is required</small>
           }
 
         </div>

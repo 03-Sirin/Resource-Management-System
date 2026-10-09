@@ -1,7 +1,7 @@
 export interface Project {
   id: number;
   name: string;
-  projectCode:string;
+  companyName: string;
   projectDeveloper: string;
   projectVoice:string;
   description: string;

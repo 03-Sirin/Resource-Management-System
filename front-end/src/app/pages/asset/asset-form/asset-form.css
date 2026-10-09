@@ -1,41 +1,34 @@
-.user-form-page {
+.asset-form-page {
   width: 100%;
 }
 
-/* Page heading */
 .page-header {
   margin-bottom: 24px;
 }
 
 .page-header h1 {
   margin: 0;
-  font-size: 28px;
-  font-weight: 600;
   color: var(--color-text);
+  font-size: 28px;
 }
 
 .page-header p {
   margin: 6px 0 0;
   color: var(--color-muted);
-  font-size: 14px;
 }
 
-
-/* Form card */
 .form-card {
+  box-sizing: border-box;
   width: 100%;
-  background: var(--color-surface);
+  padding: 30px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  padding: 30px;
-  box-sizing: border-box;
+  background: var(--color-surface);
 }
 
-
-/* Form fields */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px 20px;
 }
 
@@ -46,21 +39,21 @@
 
 .form-group label {
   margin-bottom: 7px;
+  color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-secondary);
 }
 
 .form-group input,
 .form-group select {
+  box-sizing: border-box;
   width: 100%;
   height: 42px;
   padding: 10px 12px;
   border: 1px solid var(--color-border-strong);
   border-radius: 6px;
-  font-size: 14px;
-  box-sizing: border-box;
   background: var(--color-surface);
+  font-size: 14px;
 }
 
 .form-group input:focus,
@@ -69,34 +62,64 @@
   border-color: var(--color-text-secondary);
 }
 
-
-/* Validation message */
-.form-group small {
-  margin-top: 5px;
+.form-group small,
+.form-error {
+  margin: 5px 0 0;
   color: var(--color-danger);
   font-size: 12px;
 }
 
-.form-message {
-  margin: 0 0 16px;
+.form-group .image-hint {
   color: var(--color-muted);
 }
 
-.form-error {
-  margin: 0 0 16px;
+.form-group .image-error {
   color: var(--color-danger);
 }
 
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
 
-/* Buttons section */
+.image-preview {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.image-preview img {
+  width: 112px;
+  height: 82px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  object-fit: contain;
+  background: var(--color-surface-muted);
+}
+
+.remove-image-button {
+  padding: 5px 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.form-message {
+  margin: 0 0 18px;
+  color: var(--color-text-secondary);
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-
   margin-top: 30px;
   padding-top: 20px;
-
   border-top: 1px solid var(--color-border);
 }
 
@@ -105,55 +128,34 @@
   min-width: 110px;
   height: 42px;
   padding: 10px 20px;
-
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
 }
 
 .cancel-button {
-  background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
   color: var(--color-text-secondary);
 }
 
-.cancel-button:hover {
-  background: var(--color-surface-muted);
-}
-
 .save-button {
+  border: 0;
   background: var(--color-primary);
   color: var(--color-surface);
-  border: none;
-}
-
-.save-button:hover {
-  background: var(--color-primary-hover);
 }
 
 .save-button:disabled {
-  cursor: not-allowed;
+  cursor: wait;
   opacity: 0.65;
 }
 
-
-/* Responsive */
 @media (max-width: 768px) {
-
   .form-grid {
     grid-template-columns: 1fr;
   }
 
   .form-card {
     padding: 20px;
-  }
-
-  .form-actions {
-    justify-content: stretch;
-  }
-
-  .cancel-button,
-  .save-button {
-    flex: 1;
   }
 }
