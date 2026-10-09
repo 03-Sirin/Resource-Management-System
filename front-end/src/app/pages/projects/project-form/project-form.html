@@ -1,15 +1,17 @@
 <div class="project-form-page">
 
   <div class="page-header">
+
     <div>
       <h1>{{ isEditMode ? 'Edit Project' : 'Add Project' }}</h1>
 
-    <p>
-    {{ isEditMode
-        ? 'Update project information'
-        : 'Create a new project' }}
-    </p>
+      <p>
+        {{ isEditMode
+          ? 'Update project information'
+          : 'Create a new project' }}
+      </p>
     </div>
+
   </div>
 
   <div class="form-card">
@@ -20,6 +22,7 @@
 
       <div class="form-grid">
 
+        <!-- Project Name -->
         <div class="form-group">
 
           <label for="name">Project Name *</label>
@@ -40,6 +43,74 @@
 
         </div>
 
+
+        <!-- Company Name -->
+        <div class="form-group">
+
+          <label for="companyName">Company Name *</label>
+
+          <input
+            id="companyName"
+            type="text"
+            formControlName="companyName"
+            placeholder="Enter company name"
+          />
+
+          @if (
+            projectForm.controls['companyName'].touched &&
+            projectForm.controls['companyName'].invalid
+          ) {
+            <small>Company name is required</small>
+          }
+
+        </div>
+
+
+        <!-- Project Developer -->
+        <div class="form-group">
+
+          <label for="projectDeveloper">Project Developer *</label>
+
+          <input
+            id="projectDeveloper"
+            type="text"
+            formControlName="projectDeveloper"
+            placeholder="Enter project developer"
+          />
+
+          @if (
+            projectForm.controls['projectDeveloper'].touched &&
+            projectForm.controls['projectDeveloper'].invalid
+          ) {
+            <small>Project developer is required</small>
+          }
+
+        </div>
+
+
+        <!-- Project Voice -->
+        <div class="form-group">
+
+          <label for="projectVoice">Project Voice *</label>
+
+          <input
+            id="projectVoice"
+            type="text"
+            formControlName="projectVoice"
+            placeholder="Enter project voice"
+          />
+
+          @if (
+            projectForm.controls['projectVoice'].touched &&
+            projectForm.controls['projectVoice'].invalid
+          ) {
+            <small>Project voice is required</small>
+          }
+
+        </div>
+
+
+        <!-- Manager -->
         <div class="form-group">
 
           <label for="manager">Project Manager *</label>
@@ -60,6 +131,26 @@
 
         </div>
 
+
+        <!-- Status -->
+        <div class="form-group">
+
+          <label for="status">Status *</label>
+
+          <select
+            id="status"
+            formControlName="status">
+
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Inactive">Inactive</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Description -->
         <div class="form-group full-width">
 
           <label for="description">Description *</label>
@@ -79,6 +170,8 @@
 
         </div>
 
+
+        <!-- Start Date -->
         <div class="form-group">
 
           <label for="startDate">Start Date *</label>
@@ -89,11 +182,20 @@
             formControlName="startDate"
           />
 
+          @if (
+            projectForm.controls['startDate'].touched &&
+            projectForm.controls['startDate'].invalid
+          ) {
+            <small>Start date is required</small>
+          }
+
         </div>
 
+
+        <!-- End Date -->
         <div class="form-group">
 
-          <label for="endDate">End Date *</label>
+          <label for="endDate">End Date</label>
 
           <input
             id="endDate"
@@ -101,25 +203,12 @@
             formControlName="endDate"
           />
 
-        </div>
-
-        <div class="form-group">
-
-          <label for="status">Status *</label>
-
-          <select
-            id="status"
-            formControlName="status">
-
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
-            <option value="Inactive">Inactive</option>
-
-          </select>
+          <!-- <small>Optional</small> -->
 
         </div>
 
       </div>
+
 
       <div class="form-actions">
 
@@ -130,7 +219,9 @@
           Cancel
         </button>
 
-        <button type="submit" class="save-button">
+        <button
+          type="submit"
+          class="save-button">
           {{ isEditMode ? 'Update Project' : 'Save Project' }}
         </button>
 

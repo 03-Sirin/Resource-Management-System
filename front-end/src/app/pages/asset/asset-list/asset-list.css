@@ -47,6 +47,12 @@
     width: 300px;
 }
 
+.asset-count {
+    margin: 0 0 10px;
+    color: var(--color-muted);
+    font-size: 13px;
+}
+
 .table-container {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -72,9 +78,33 @@ th {
     color: var(--color-text-secondary);
 }
 
+.project-filter-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: inherit;
+    font-weight: 600;
+}
+
+.project-filter {
+    max-width: 180px;
+    padding: 6px 8px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 5px;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: 12px;
+}
+
 td {
     color: var(--color-text-secondary);
     font-size: 14px;
+}
+
+.empty-state {
+    padding: 28px;
+    color: var(--color-muted);
+    text-align: center;
 }
 
 .status {
