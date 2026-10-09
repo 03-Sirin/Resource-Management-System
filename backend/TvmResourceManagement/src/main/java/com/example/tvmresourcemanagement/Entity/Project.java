@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 @Entity
 @Table(name = "projects")
 @Getter
@@ -20,17 +21,8 @@ public class Project {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "company_name", nullable = false)
     private String companyName;
-
-    @Column(name = "developer_name")
-    private String projectDeveloper;
-
-    @Column(name = "voice_name")
-    private String projectVoice;
-
-    @Column(name = "manager_name")
-    private String manager;
 
     @Column(columnDefinition = "TEXT")
     private String description;
