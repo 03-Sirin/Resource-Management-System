@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "projects")
 @Getter
@@ -44,6 +45,4 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectStatus status;
-
-
 }

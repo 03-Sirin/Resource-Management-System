@@ -36,16 +36,16 @@ public class ProjectServiceImpl implements ProjectService {
                 .manager(request.getManager())
                 .description(request.getDescription())
                 .startDate(request.getStartDate())
-                .endDate(null)
+                .endDate(request.getEndDate())
                 .status(ProjectStatus.ACTIVE)
                 .build();
 
         return mapToResponse(projectRepository.save(project));
     }
+
     @Override
     @Transactional(readOnly = true)
     public List<ProjectResponse> getAllProjects() {
-
         return projectRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
@@ -55,20 +55,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(readOnly = true)
     public ProjectResponse getProjectById(Long id) {
-
         Project project = projectRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Project not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
 
         return mapToResponse(project);
     }
 
     @Override
     public ProjectResponse updateProject(Long id, ProjectUpdateRequest request) {
-
         Project project = projectRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Project not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
 
         if (!project.getProjectCode().equals(request.getProjectCode())
                 && projectRepository.existsByProjectCode(request.getProjectCode())) {
@@ -82,6 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setManager(request.getManager());
         project.setDescription(request.getDescription());
         project.setStartDate(request.getStartDate());
+
         if (project.getStatus() == ProjectStatus.COMPLETED && request.getEndDate() == null) {
             throw new IllegalArgumentException("End date is required for a completed project");
         }
@@ -97,10 +94,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse updateProjectStatus(Long id, String status, LocalDate endDate) {
-
         Project project = projectRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Project not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id));
 
         ProjectStatus projectStatus;
 
@@ -141,7 +136,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private void validateDateRange(LocalDate startDate, LocalDate endDate) {
-        if (endDate != null && endDate.isBefore(startDate)) {
+        if (endDate != null && startDate != null && endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("End date cannot be before start date");
         }
     }
