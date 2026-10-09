@@ -26,12 +26,9 @@ export class ProjectForm {
   ) {
     this.projectForm = this.fb.group({
       name: ['', Validators.required],
-      companyName: ['', Validators.required],
-      projectDeveloper: ['', Validators.required],
-      projectVoice: ['', Validators.required],
       description: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: [''],
+      endDate: ['', Validators.required],
       status: ['Active', Validators.required],
       manager: ['', Validators.required]
     });
@@ -52,33 +49,27 @@ export class ProjectForm {
 
   
 
-  saveProject(): void {
-    if (this.projectForm.invalid) {
-      this.projectForm.markAllAsTouched();
-      return;
-    }
+  saveProject() {
 
-    const value = this.projectForm.getRawValue();
-    const project: Omit<Project, 'id'> = {
-      name: value.name.trim(),
-      companyName: value.companyName.trim(),
-      projectDeveloper: value.projectDeveloper.trim(),
-      projectVoice: value.projectVoice.trim(),
-      description: value.description.trim(),
-      startDate: value.startDate,
-      endDate: value.endDate || null,
-      status: value.status,
-      manager: value.manager.trim()
-    };
-
-    if (this.isEditMode && this.projectId !== null) {
-      this.projectsService.updateProject(this.projectId, project);
-    } else {
-      this.projectsService.createProject(project);
-    }
-
-    this.router.navigate(['/projects']);
+  if (this.projectForm.invalid) {
+    this.projectForm.markAllAsTouched();
+    return;
   }
+
+  if (this.isEditMode) {
+
+    console.log('Updating project:', this.projectId);
+    console.log(this.projectForm.value);
+
+  } else {
+
+    console.log('Creating project:');
+    console.log(this.projectForm.value);
+
+  }
+
+  this.router.navigate(['/projects']);
+}
 
   cancel() {
     this.router.navigate(['/projects']);

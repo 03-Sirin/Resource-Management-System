@@ -1,6 +1,6 @@
 .app-layout {
     min-height: 100vh;
-    background: var(--color-canvas);
+    background: #f5f6f8;
 }
 
 .body-layout {

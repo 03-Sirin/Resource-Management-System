@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { User } from '../../models/user/user.interface';
 import { UserCreateRequest } from '../../models/user/user.create.interface';
@@ -30,14 +30,9 @@ export class UsersService {
 
   // GET /api/users/{id}
   getUserById(id: number): Observable<User> {
-    return this.getUsers().pipe(
-      map(users => {
-        const user = users.find(item => Number(item.id) === id);
-        if (!user) {
-          throw new Error(`Employee ${id} was not found.`);
-        }
-        return user;
-      })
+
+    return this.http.get<User>(
+      `${this.apiUrl}/${id}`
     );
 
   }

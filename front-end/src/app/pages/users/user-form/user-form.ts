@@ -32,8 +32,6 @@ export class UserForm {
   userId: number | null = null;
 
   isEditMode = false;
-  isLoading = false;
-  loadError = '';
 
 
   constructor(
@@ -96,16 +94,8 @@ export class UserForm {
 
 
     if (id) {
-  const userId = Number(id);
-  if (!Number.isSafeInteger(userId) || userId <= 0) {
-    this.loadError = 'Invalid employee ID.';
-    this.isEditMode = true;
-    return;
-  }
-
-  this.userId = userId;
+  this.userId = Number(id);
   this.isEditMode = true;
-  this.isLoading = true;
 
   this.usersService.getUserById(this.userId).subscribe({
     next: (user) => {
@@ -122,14 +112,9 @@ export class UserForm {
       // Password is not required when editing a user
       this.userForm.get('password')?.clearValidators();
       this.userForm.get('password')?.updateValueAndValidity();
-      this.isLoading = false;
     },
     error: (error) => {
       console.error('Failed to load user:', error);
-      this.loadError = error instanceof Error && error.message.includes('was not found')
-        ? 'Employee not found.'
-        : 'Could not load employee details. Please try again.';
-      this.isLoading = false;
     }
   });
 }
@@ -138,10 +123,6 @@ export class UserForm {
 
 
   saveUser(): void {
-
-  if (this.isLoading || this.loadError) {
-    return;
-  }
 
   if (this.userForm.invalid) {
     this.userForm.markAllAsTouched();

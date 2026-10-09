@@ -1,57 +1,144 @@
 <div class="user-details-page">
-  @if (loading()) {
-    <div class="message" role="status">Loading user details...</div>
-  } @else if (user(); as user) {
-    <div class="page-header">
-      <div>
-        <h1>User Details</h1>
-        <p>View user information</p>
-      </div>
 
-      <div class="header-actions">
-        <button class="back-button" type="button" (click)="goBack()">Back</button>
-        <a class="edit-button" [routerLink]="['/users/edit', user.id]">Edit</a>
-      </div>
-    </div>
+    @if (loading()) {
 
-    <section class="details-card" aria-label="User information">
-      <div class="detail-item">
-        <span class="label">Employee Code</span>
-        <span class="value">{{ user.employeeCode }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">First Name</span>
-        <span class="value">{{ user.firstName }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">Last Name</span>
-        <span class="value">{{ user.lastName || '-' }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">Email</span>
-        <span class="value">{{ user.email }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">Phone</span>
-        <span class="value">{{ user.phone || '-' }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">Role</span>
-        <span class="value">{{ user.role }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="label">Status</span>
-        <span
-          class="status"
-          [class.active]="user.status === 'ACTIVE'"
-          [class.inactive]="user.status === 'INACTIVE'">
-          {{ user.status }}
-        </span>
-      </div>
-    </section>
-  } @else {
-    <div class="not-found" role="alert">
-      {{ loadError() }}
-    </div>
-  }
+        <div class="loading">
+            Loading user details...
+        </div>
+
+    } @else if (user(); as user) {
+
+        <div class="page-header">
+
+            <div>
+                <h1>User Details</h1>
+                <p>View user information</p>
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    class="back-button"
+                    (click)="goBack()">
+                    Back
+                </button>
+
+                <a
+                    class="edit-button"
+                    [routerLink]="['/users/edit', user.id]">
+                    Edit
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="details-card">
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Employee Code
+                </span>
+
+                <span class="value">
+                    {{ user.employeeCode }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    First Name
+                </span>
+
+                <span class="value">
+                    {{ user.firstName }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Last Name
+                </span>
+
+                <span class="value">
+                    {{ user.lastName || '-' }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Email
+                </span>
+
+                <span class="value">
+                    {{ user.email }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Phone
+                </span>
+
+                <span class="value">
+                    {{ user.phone || '-' }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Role
+                </span>
+
+                <span class="value">
+                    {{ user.role }}
+                </span>
+
+            </div>
+
+
+            <div class="detail-item">
+
+                <span class="label">
+                    Status
+                </span>
+
+                <span
+                    class="status"
+                    [class.active]="user.status === 'ACTIVE'"
+                    [class.inactive]="user.status === 'INACTIVE'">
+
+                    {{ user.status }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    } @else {
+
+        <div class="not-found">
+            {{ loadError() }}
+        </div>
+
+    }
+
 </div>

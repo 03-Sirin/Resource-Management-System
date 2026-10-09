@@ -9,31 +9,29 @@
 .page-header h1 {
   margin: 0;
   font-size: 28px;
-  color: var(--color-text);
+  color: #1f2937;
 }
 
 .page-header p {
   margin-top: 6px;
-  color: var(--color-muted);
+  color: #6b7280;
 }
 
 .form-card {
-  width: 100%;
-  box-sizing: border-box;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: white;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   padding: 30px;
+  max-width: 900px;
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .form-group {
-  min-width: 0;
   display: flex;
   flex-direction: column;
 }
@@ -46,15 +44,14 @@
   margin-bottom: 7px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: #374151;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-  width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
@@ -70,12 +67,12 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--color-muted);
+  border-color: #6b7280;
 }
 
 .form-group small {
   margin-top: 5px;
-  color: var(--color-danger);
+  color: #dc2626;
   font-size: 12px;
 }
 
@@ -85,7 +82,7 @@
   gap: 12px;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid #e5e7eb;
 }
 
 .cancel-button,
@@ -97,21 +94,26 @@
 }
 
 .cancel-button {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
+  background: white;
+  border: 1px solid #d1d5db;
 }
 
 .save-button {
-  background: var(--color-primary);
-  color: var(--color-surface);
+  background: #1f2937;
+  color: white;
   border: none;
 }
 
 /* Tablet */
 @media (max-width: 768px) {
 
+  .project-form-page {
+    padding: 10px;
+  }
+
   .form-card {
     padding: 20px;
+    max-width: 100%;
   }
 
   .form-grid {
@@ -132,6 +134,10 @@
 
 /* Mobile */
 @media (max-width: 480px) {
+
+  .project-form-page {
+    padding: 5px;
+  }
 
   .form-card {
     padding: 15px;

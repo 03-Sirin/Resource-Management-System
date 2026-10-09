@@ -12,20 +12,20 @@
 .page-header h1 {
     margin: 0;
     font-size: 28px;
-    color: var(--color-text);
+    color: #1f2937;
 }
 
 .page-header p {
     margin-top: 6px;
-    color: var(--color-muted);
+    color: #6b7280;
 }
 
 .add-button {
     padding: 10px 18px;
     border: none;
     border-radius: 6px;
-    background: var(--color-primary);
-    color: var(--color-surface);
+    background: #1f2937;
+    color: white;
     cursor: pointer;
 }
 
@@ -38,7 +38,7 @@
 .filters input,
 .filters select {
     padding: 10px 12px;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
 }
@@ -48,8 +48,8 @@
 }
 
 .table-container {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background: white;
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
     overflow-x: auto;
 }
@@ -63,17 +63,17 @@ th,
 td {
     padding: 14px 16px;
     text-align: left;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid #e5e7eb;
 }
 
 th {
-    background: var(--color-table-header);
+    background: #f9fafb;
     font-size: 14px;
-    color: var(--color-text-secondary);
+    color: #374151;
 }
 
 td {
-    color: var(--color-text-secondary);
+    color: #4b5563;
     font-size: 14px;
 }
 
@@ -84,13 +84,13 @@ td {
 }
 
 .status.active {
-    background: var(--color-success-soft);
-    color: var(--color-success);
+    background: #dcfce7;
+    color: #166534;
 }
 
 .status.inactive {
-    background: var(--color-danger-soft);
-    color: var(--color-danger);
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .actions {
@@ -100,14 +100,14 @@ td {
 
 .actions button {
     padding: 6px 10px;
-    border: 1px solid var(--color-border-strong);
-    background: var(--color-surface);
+    border: 1px solid #d1d5db;
+    background: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .actions button:hover {
-    background: var(--color-surface-muted);
+    background: #f3f4f6;
 }
 
 /* =========================

@@ -1,12 +1,9 @@
 export interface Project {
   id: number;
   name: string;
-  companyName: string;
-  projectDeveloper: string;
-  projectVoice:string;
   description: string;
   startDate: string;
-  endDate: string | null;
+  endDate: string;
   status: string;
   manager: string;
 }
