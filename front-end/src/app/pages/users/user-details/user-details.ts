@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import {
   ActivatedRoute,
@@ -52,7 +51,7 @@ export class UserDetails implements OnInit {
 
         this.loading.set(false);
         this.loadError.set(
-          error instanceof HttpErrorResponse && error.status === 404
+          error instanceof Error && error.message.includes('was not found')
             ? 'User not found.'
             : 'Could not load user details. Please try again.'
         );

@@ -23,6 +23,14 @@
 
     <div class="form-card">
 
+        @if (isLoading) {
+            <p class="form-message" role="status">Loading employee details...</p>
+        }
+
+        @if (loadError) {
+            <p class="form-error" role="alert">{{ loadError }}</p>
+        }
+
         <form
             [formGroup]="userForm"
             (ngSubmit)="saveUser()">
@@ -285,6 +293,10 @@
             </div>
 
 
+            @if (saveError) {
+                <p class="form-error" role="alert">{{ saveError }}</p>
+            }
+
             <div class="form-actions">
 
                 <button
@@ -299,10 +311,13 @@
 
                 <button
                     type="submit"
-                    class="save-button">
+                    class="save-button"
+                    [disabled]="isLoading || isSaving || !!loadError">
 
                     {{
-                        isEditMode
+                        isSaving
+                            ? 'Saving...'
+                            : isEditMode
                             ? 'Update User'
                             : 'Save User'
                     }}

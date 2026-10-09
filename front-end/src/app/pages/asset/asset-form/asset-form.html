@@ -1,0 +1,118 @@
+<div class="asset-form-page">
+  <div class="page-header">
+    <h1>{{ isEditMode ? 'Edit Asset' : 'Add Asset' }}</h1>
+    <p>{{ isEditMode ? 'Update asset information' : 'Add a new company asset' }}</p>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="assetForm" (ngSubmit)="saveAsset()" novalidate>
+      @if (isLoadingAsset) {
+        <p class="form-message">Loading asset details...</p>
+      }
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="assetTag">Asset Tag *</label>
+          <input id="assetTag" type="text" formControlName="assetTag" placeholder="Enter asset tag" required />
+          @if (assetForm.controls['assetTag'].touched && assetForm.controls['assetTag'].invalid) {
+            <small>Asset tag is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="companyName">Company *</label>
+          <select id="companyName" formControlName="companyName" required>
+            <option value="Internal">Internal</option>
+            <option value="Client">Client</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="deviceType">Device Type *</label>
+          <select id="deviceType" formControlName="deviceType" required>
+            <option value="">Select device type</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Mobile Phone">Mobile Phone</option>
+          </select>
+          @if (assetForm.controls['deviceType'].touched && assetForm.controls['deviceType'].invalid) {
+            <small>Device type is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="receivedDate">Received Date *</label>
+          <input id="receivedDate" type="date" formControlName="receivedDate" required />
+          @if (assetForm.controls['receivedDate'].touched && assetForm.controls['receivedDate'].invalid) {
+            <small>Received date is required.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status *</label>
+          <select id="status" formControlName="status">
+            <option value="Available">Available</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Retired">Retired</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="assignedTo">Assigned To</label>
+          <input id="assignedTo" type="text" formControlName="assignedTo" placeholder="Enter assignee" />
+        </div>
+
+        <div class="form-group">
+          <label for="project">Project</label>
+          @if (projectLoadError) {
+            <small role="alert">{{ projectLoadError }}</small>
+          }
+          <select id="project" formControlName="project">
+            <option value="">Not assigned</option>
+            @for (project of projects; track project.id) {
+              <option [value]="project.name">{{ project.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="assetImage">Asset image</label>
+          <input
+            id="assetImage"
+            type="file"
+            multiple
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            (change)="onImagesSelected($event)" />
+          <small class="image-hint">Select multiple images (up to 5 MB each).</small>
+          @if (imageError) {
+            <small class="image-error" role="alert">{{ imageError }}</small>
+          }
+          @if (imageDataUrls.length > 0) {
+            <div class="image-previews">
+              @for (image of imageDataUrls; track $index) {
+                <div class="image-preview">
+                  <img [src]="image" [alt]="'Selected asset image ' + ($index + 1)" />
+                  <button class="remove-image-button" type="button" (click)="removeImage($index)">Remove</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (formError) {
+        <p class="form-error" role="alert">{{ formError }}</p>
+      }
+
+      <div class="form-actions">
+        <button class="cancel-button" type="button" (click)="cancel()">Cancel</button>
+        <button
+          class="save-button"
+          type="submit"
+          [disabled]="isSaving || isLoadingAsset || (isEditMode && assetId === null)">
+          {{ isSaving ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Add Asset') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

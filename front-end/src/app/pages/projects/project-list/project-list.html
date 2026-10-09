@@ -15,17 +15,24 @@
 
   </div>
 
+  <div class="filters">
+    <input
+      type="search"
+      [(ngModel)]="searchText"
+      placeholder="Search by project code, name or description"
+      aria-label="Search projects" />
+  </div>
+
   <div class="table-container">
 
     <table>
 
       <thead>
         <tr>
-          <th>Project Code</th>
           <th>Project Name</th>
-          <th>Developer</th>
-          <th>Voice</th>
-          <th>Description</th>
+          <th>Company Name</th>
+          <th>Project Developer</th>
+          <th>Project Voice</th>
           <th>Manager</th>
           <th>Start Date</th>
           <th>End Date</th>
@@ -36,21 +43,19 @@
 
       <tbody>
 
-        @for (project of projects; track project.id) {
+        @for (project of filteredProjects; track project.id) {
 
           <tr>
 
-            <td>{{ project.projectCode }}</td>
-
             <td>{{ project.name }}</td>
 
-            <td>{{ project.projectDeveloper }}</td>
+            <td>{{ project.companyName }}</td>
 
-            <td>{{ project.projectVoice }}</td>
+            <td>{{ project.projectDeveloper || '-' }}</td>
 
-            <td>{{ project.description }}</td>
+            <td>{{ project.projectVoice || '-' }}</td>
 
-            <td>{{ project.manager }}</td>
+            <td>{{ project.manager || '-' }}</td>
 
             <td>{{ project.startDate }}</td>
 
@@ -61,10 +66,10 @@
             <td>
               <span
                 class="status"
-                [class.active]="project.status === 'Active'"
-                [class.completed]="project.status === 'Completed'">
+                [class.active]="project.status === 'ACTIVE'"
+                [class.completed]="project.status === 'COMPLETED'">
 
-                {{ project.status }}
+                {{ statusLabel(project.status) }}
 
               </span>
             </td>
@@ -85,6 +90,18 @@
 
           </tr>
 
+        } @empty {
+          <tr>
+            <td colspan="9" class="empty-state">
+              @if (isLoading()) {
+                <span role="status">Loading projects...</span>
+              } @else if (loadError()) {
+                <span role="alert">{{ loadError() }}</span>
+              } @else {
+                No projects match your search.
+              }
+            </td>
+          </tr>
         }
 
       </tbody>

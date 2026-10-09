@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Layout } from './layout/layout/layout';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -8,8 +9,16 @@ export const routes: Routes = [
         component: Login
     },
     {
+        path: 'register',
+        loadComponent: () =>
+            import('./pages/register/register')
+                .then(m => m.Register)
+    },
+    {
         path: '',
         component: Layout,
+        canActivate: [authGuard],
+        canActivateChild: [authGuard],
         children: [
             {
                 path: 'dashboard',
@@ -58,6 +67,30 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./pages/projects/project-form/project-form')
                         .then(m => m.ProjectForm)
+            },
+            {
+                path: 'assets/add',
+                loadComponent: () =>
+                    import('./pages/asset/asset-form/asset-form')
+                        .then(m => m.AssetForm)
+            },
+            {
+                path: 'assets',
+                loadComponent: () =>
+                    import('./pages/asset/asset-list/asset-list')
+                        .then(m => m.AssetList)
+            },
+            {
+                path: 'assets/edit/:id',
+                loadComponent: () =>
+                    import('./pages/asset/asset-form/asset-form')
+                        .then(m => m.AssetForm)
+            },
+            {
+                path: 'assets/:id',
+                loadComponent: () =>
+                    import('./pages/asset/asset-details/asset-details')
+                        .then(m => m.AssetDetails)
             },
             {
                 path: 'projects/:id',

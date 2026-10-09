@@ -18,9 +18,6 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "project_code", nullable = false, unique = true, updatable = false)
-    private String internalReference;
-
     @Column(nullable = false)
     private String name;
 
@@ -39,12 +36,5 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectStatus status;
-
-    @PrePersist
-    private void assignInternalReference() {
-        if (internalReference == null) {
-            internalReference = UUID.randomUUID().toString();
-        }
-    }
 
 }

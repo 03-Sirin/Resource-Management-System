@@ -1,0 +1,110 @@
+<div class="login-container">
+  <section class="login-card register-card" aria-labelledby="register-title">
+    <h1 id="register-title">Create your account</h1>
+    <p class="subtitle">Join Resource Management as an employee</p>
+
+    @if (isRegistered) {
+      <p class="success-message" role="status">Your account has been created.</p>
+      <a class="login-button login-link" routerLink="/login">Back to login</a>
+    } @else {
+      @if (errorMessage) {
+        <p class="error-message" role="alert">{{ errorMessage }}</p>
+      }
+
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="form-group employee-code-field">
+          <label for="employeeCode">Employee code</label>
+          <input id="employeeCode" type="text" formControlName="employeeCode" autocomplete="organization-title" placeholder="Enter your employee code" />
+          @if (registerForm.controls.employeeCode.touched && registerForm.controls.employeeCode.invalid) {
+            <small>Employee code is required</small>
+          }
+        </div>
+
+        <div class="form-group phone-field">
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" formControlName="phone" autocomplete="tel" placeholder="Enter your phone number"
+          required />
+          @if (registerForm.controls.phone.touched && registerForm.controls.phone.hasError('required')) { <small>Phone number is required</small> }
+
+          @if (registerForm.controls.phone.touched && registerForm.controls.phone.hasError('pattern')) { <small>Enter a valid 10-digit phone number</small> }
+        </div>
+
+        <div class="form-row name-fields">
+          <div class="form-group">
+            <label for="firstName">First name</label>
+            <input id="firstName" type="text" formControlName="firstName" autocomplete="given-name" placeholder="First name" />
+            @if (registerForm.controls.firstName.touched && registerForm.controls.firstName.invalid) {
+              <small>First name is required</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input id="lastName" type="text" formControlName="lastName" autocomplete="family-name" placeholder="Last name" />
+          </div>
+        </div>
+
+        <div class="form-group email-field">
+          <label for="email">Work email</label>
+          <input id="email" type="email" formControlName="email" autocomplete="email" placeholder="name@company.com" />
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+            <small>Enter a valid email address</small>
+          }
+        </div>
+
+        <div class="form-group password-field">
+          <label for="registerPassword">Password</label>
+          <div class="password-box">
+            <input id="registerPassword" [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="new-password" placeholder="At least 8 characters" />
+            <button type="button" class="password-toggle" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'" [attr.aria-pressed]="showPassword">
+              @if (showPassword) {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8" />
+                  <path d="M9.9 5.2A10.8 10.8 0 0112 5c5.2 0 8.7 4.3 10 7-.5 1.1-1.5 2.6-3 3.9M6.2 6.2C3.9 7.6 2.5 9.7 2 12c1.3 2.7 4.8 7 10 7 1 0 2-.2 2.9-.5" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              }
+            </button>
+          </div>
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+            <small>Password must be at least 8 characters</small>
+          }
+        </div>
+
+        <div class="form-group confirm-password-field">
+          <label for="confirmPassword">Confirm password</label>
+          <div class="password-box">
+            <input id="confirmPassword" [type]="showConfirmation ? 'text' : 'password'" formControlName="confirmPassword" autocomplete="new-password" placeholder="Re-enter your password" />
+            <button type="button" class="password-toggle" (click)="showConfirmation = !showConfirmation" [attr.aria-label]="showConfirmation ? 'Hide confirmation password' : 'Show confirmation password'" [attr.aria-pressed]="showConfirmation">
+              @if (showConfirmation) {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18M10.6 10.6a2 2 0 002.8 2.8" />
+                  <path d="M9.9 5.2A10.8 10.8 0 0112 5c5.2 0 8.7 4.3 10 7-.5 1.1-1.5 2.6-3 3.9M6.2 6.2C3.9 7.6 2.5 9.7 2 12c1.3 2.7 4.8 7 10 7 1 0 2-.2 2.9-.5" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              }
+            </button>
+          </div>
+          @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordMismatch')) {
+            <small>Passwords do not match</small>
+          }
+        </div>
+
+        <p class="role-note">New accounts receive Employee access.</p>
+        <button type="submit" class="login-button" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Creating account…' : 'Create account' }}
+        </button>
+      </form>
+
+      <p class="register-prompt">Already have an account? <a routerLink="/login">Sign in</a></p>
+    }
+  </section>
+</div>

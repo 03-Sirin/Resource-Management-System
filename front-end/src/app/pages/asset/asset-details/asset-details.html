@@ -1,0 +1,65 @@
+<div class="asset-details-page">
+  @if (loading()) {
+    <div class="message" role="status">Loading asset details...</div>
+  } @else if (asset(); as asset) {
+    <div class="page-header">
+      <div>
+        <h1>Asset Details</h1>
+        <p>View information for {{ asset.assetTag }}</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="back-button" type="button" (click)="goBack()">Back</button>
+        <a class="edit-button" [routerLink]="['/assets/edit', asset.id]">Edit Asset</a>
+      </div>
+    </div>
+
+    <section class="details-card" aria-label="Asset information">
+      <div class="detail-item">
+        <span class="label">Asset Tag</span>
+        <span class="value">{{ asset.assetTag }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Company</span>
+        <span class="value">{{ asset.companyName }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Device Type</span>
+        <span class="value">{{ asset.deviceType }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Received Date</span>
+        <span class="value">{{ asset.receivedDate }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Status</span>
+        <span class="value">{{ asset.status }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Assigned To</span>
+        <span class="value">{{ asset.assignedTo || '-' }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Project</span>
+        <span class="value">{{ asset.project || '-' }}</span>
+      </div>
+      @if (asset.imageUrls?.length) {
+        <div class="detail-item full-width">
+          <span class="label">Asset Images</span>
+          <div class="asset-images">
+            @for (image of asset.imageUrls; track $index) {
+              <figure class="asset-image">
+                <img [src]="image" [alt]="'Image ' + ($index + 1) + ' of asset ' + asset.assetTag" />
+              </figure>
+            }
+          </div>
+        </div>
+      }
+    </section>
+  } @else {
+    <div class="not-found" role="alert">
+      <p>{{ loadError() }}</p>
+      <button class="back-button" type="button" (click)="goBack()">Back to Assets</button>
+    </div>
+  }
+</div>

@@ -19,6 +19,12 @@ public class ProjectUpdateRequest {
     @NotBlank(message = "Company name is required")
     private String companyName;
 
+    private String projectDeveloper;
+
+    private String projectVoice;
+
+    private String manager;
+
     private String description;
 
     @NotNull(message = "Start date is required")

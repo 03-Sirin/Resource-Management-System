@@ -15,6 +15,9 @@ public class ProjectResponse {
     private Long id;
     private String name;
     private String companyName;
+    private String projectDeveloper;
+    private String projectVoice;
+    private String manager;
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;

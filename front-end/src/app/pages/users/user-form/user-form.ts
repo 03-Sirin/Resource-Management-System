@@ -10,6 +10,7 @@ import {
   ActivatedRoute,
   Router
 } from '@angular/router';
+import { of, switchMap } from 'rxjs';
 
 import { UsersService } from '../../../core/services/user/user';
 
@@ -32,6 +33,10 @@ export class UserForm {
   userId: number | null = null;
 
   isEditMode = false;
+  isLoading = false;
+  isSaving = false;
+  loadError = '';
+  saveError = '';
 
 
   constructor(
@@ -94,8 +99,16 @@ export class UserForm {
 
 
     if (id) {
-  this.userId = Number(id);
+  const userId = Number(id);
+  if (!Number.isSafeInteger(userId) || userId <= 0) {
+    this.loadError = 'Invalid employee ID.';
+    this.isEditMode = true;
+    return;
+  }
+
+  this.userId = userId;
   this.isEditMode = true;
+  this.isLoading = true;
 
   this.usersService.getUserById(this.userId).subscribe({
     next: (user) => {
@@ -112,9 +125,14 @@ export class UserForm {
       // Password is not required when editing a user
       this.userForm.get('password')?.clearValidators();
       this.userForm.get('password')?.updateValueAndValidity();
+      this.isLoading = false;
     },
     error: (error) => {
       console.error('Failed to load user:', error);
+      this.loadError = error instanceof Error && error.message.includes('was not found')
+        ? 'Employee not found.'
+        : 'Could not load employee details. Please try again.';
+      this.isLoading = false;
     }
   });
 }
@@ -123,6 +141,10 @@ export class UserForm {
 
 
   saveUser(): void {
+
+  if (this.isLoading || this.isSaving || this.loadError) {
+    return;
+  }
 
   if (this.userForm.invalid) {
     this.userForm.markAllAsTouched();
@@ -134,27 +156,37 @@ export class UserForm {
   if (this.isEditMode && this.userId !== null) {
 
     const userUpdateRequest: UserUpdateRequest = {
-      employeeCode: formValue.employeeCode,
-      firstName: formValue.firstName,
-      lastName: formValue.lastName,
-      email: formValue.email,
-      phone: formValue.phone,
-      role: formValue.role,
-      status: formValue.status
+      employeeCode: formValue.employeeCode.trim(),
+      firstName: formValue.firstName.trim(),
+      lastName: formValue.lastName.trim(),
+      email: formValue.email.trim(),
+      phone: formValue.phone?.trim() || null,
+      role: formValue.role
     };
 
-    this.usersService.updateUser(
-      this.userId,
-      userUpdateRequest
+    this.isSaving = true;
+    this.saveError = '';
+    this.usersService.updateUser(this.userId, userUpdateRequest).pipe(
+      switchMap(updatedUser => {
+        const status = formValue.status;
+        return updatedUser.status === status
+          ? of(updatedUser)
+          : this.usersService.updateUserStatus(updatedUser.id, { status });
+      })
     ).subscribe({
 
       next: (response) => {
         console.log('User updated successfully:', response);
+        this.isSaving = false;
         this.router.navigate(['/users']);
       },
 
       error: (error) => {
         console.error('Failed to update user:', error);
+        this.saveError = error.status === 409
+          ? error.error?.detail || 'Employee code, email, or phone number is already in use.'
+          : 'Could not update the user. Please check the values and try again.';
+        this.isSaving = false;
       }
 
     });
@@ -182,6 +214,10 @@ export class UserForm {
 
       error: (error) => {
         console.error('Failed to create user:', error);
+        this.saveError = error.status === 409
+          ? error.error?.detail || 'Employee code, email, or phone number is already in use.'
+          : 'Could not create the user. Please check the values and try again.';
+        this.isSaving = false;
       }
 
     });

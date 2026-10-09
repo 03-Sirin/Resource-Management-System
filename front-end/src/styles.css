@@ -1,1 +1,112 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  color-scheme: light;
+  --color-canvas: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-soft: #eef2ff;
+  --color-primary-strong: #3730a3;
+  --color-sidebar: #172554;
+  --color-sidebar-hover: #263b70;
+  --color-sidebar-active: #0f766e;
+  --color-table-header: #e8edff;
+  --color-table-row: #f8faff;
+  --color-table-hover: #e8f5ff;
+  --color-text: #172033;
+  --color-text-secondary: #334155;
+  --color-muted: #64748b;
+  --color-border: #dbe3ef;
+  --color-border-strong: #b8c5d8;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-on-primary: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:not(:disabled):hover {
+  filter: brightness(0.96);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #818cf8;
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: var(--color-primary) !important;
+  outline: 3px solid rgb(79 70 229 / 18%);
+  outline-offset: 1px;
+}
+
+.table-container thead {
+  background: var(--color-table-header);
+}
+
+.table-container {
+  box-shadow: 0 8px 24px rgb(23 37 84 / 6%);
+}
+
+.table-container th {
+  background: var(--color-table-header);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.table-container tbody tr:nth-child(even) {
+  background: var(--color-table-row);
+}
+
+.table-container tbody tr:hover {
+  background: var(--color-table-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

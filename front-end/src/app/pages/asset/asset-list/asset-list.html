@@ -1,0 +1,139 @@
+<div class="asset-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Assets</h1>
+      <p>Manage company assets and resources</p>
+    </div>
+
+    <button
+      class="add-button"
+      routerLink="/assets/add">
+      + Add Asset
+    </button>
+
+  </div>
+
+
+   <div class="filters">
+     @if (projectLoadError) {
+       <p role="alert">{{ projectLoadError }}</p>
+     }
+
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Search by asset tag, company or device type"
+  />
+
+  <select [(ngModel)]="selectedDeviceType">
+
+    <option value="All">All Device Types</option>
+    <option value="Laptop">Laptop</option>
+    <option value="Mobile Phone">Mobile Phone</option>
+
+  </select>
+
+  <select [(ngModel)]="selectedStatus">
+
+    <option value="All">All Status</option>
+    <option value="Available">Available</option>
+    <option value="Assigned">Assigned</option>
+    <option value="Maintenance">Maintenance</option>
+    <option value="Retired">Retired</option>
+
+  </select>
+
+</div>
+
+  <p class="asset-count" aria-live="polite">
+    Showing {{ filteredAssets.length }} of {{ assets.length }} assets
+  </p>
+
+  <div class="table-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Asset Tag</th>
+          <th>Company</th>
+          <th>Device Type</th>
+          <th>Received Date</th>
+          <th>Status</th>
+          <th>Assigned To</th>
+          <th>
+            <!-- <label class="project-filter-label" for="projectFilter">Project</label> -->
+            <select id="projectFilter" class="project-filter" [(ngModel)]="selectedProject" aria-label="Filter assets by project">
+              <option value="All">All Projects</option>
+              <option value="Unassigned">Unassigned</option>
+              @for (project of projects; track project.id) {
+                <option [value]="project.name">{{ project.name }}</option>
+              }
+            </select>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+        @for (asset of filteredAssets; track asset.id) {
+
+          <tr>
+
+            <td>{{ asset.assetTag }}</td>
+
+            <td>{{ asset.companyName }}</td>
+
+            <td>{{ asset.deviceType }}</td>
+
+            <td>{{ asset.receivedDate }}</td>
+
+            <td>
+              <span class="status">
+                {{ asset.status }}
+              </span>
+            </td>
+
+            <td>
+              {{ asset.assignedTo || '-' }}
+            </td>
+
+            <td>
+              {{ asset.project || '-' }}
+            </td>
+
+            <td class="actions">
+
+              <button
+                [routerLink]="['/assets', asset.id]">
+                View
+              </button>
+
+              <button
+                [routerLink]="['/assets/edit', asset.id]">
+                Edit
+              </button>
+
+            </td>
+
+          </tr>
+
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-state">
+              {{ assets.length ? 'No assets match the selected filters.' : 'No assets have been added yet.' }}
+            </td>
+          </tr>
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
