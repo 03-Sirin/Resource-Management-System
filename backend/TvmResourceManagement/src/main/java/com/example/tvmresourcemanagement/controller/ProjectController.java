@@ -36,14 +36,14 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponse> getProjectById(
-            @PathVariable Long id) {
+            @PathVariable("id") Long id) {
 
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProjectResponse> updateProject(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody ProjectUpdateRequest request) {
 
         return ResponseEntity.ok(
@@ -53,9 +53,9 @@ public class ProjectController {
 
     @PatchMapping("/{id}/status")
     public ResponseEntity<ProjectResponse> updateProjectStatus(
-            @PathVariable Long id,
-            @RequestParam String status,
-            @RequestParam(required = false) LocalDate endDate) {
+            @PathVariable("id") Long id,
+            @RequestParam("status") String status,
+            @RequestParam(name = "endDate", required = false) LocalDate endDate) {
 
         return ResponseEntity.ok(
                 projectService.updateProjectStatus(id, status, endDate)

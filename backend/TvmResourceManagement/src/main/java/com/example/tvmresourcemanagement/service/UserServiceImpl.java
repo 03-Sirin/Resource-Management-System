@@ -10,9 +10,13 @@ import com.example.tvmresourcemanagement.enums.UserStatus;
 import com.example.tvmresourcemanagement.repository.RoleRepository;
 import com.example.tvmresourcemanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,6 +36,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Employee code already exists");
         }
 
+        String phone = normalizePhone(request.getPhone());
+        if (phone != null && userRepository.existsByPhone(phone)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone number already exists");
+        }
+
         Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() -> new IllegalArgumentException("Role not found"));
 
@@ -41,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .phone(request.getPhone())
+                .phone(phone)
                 .role(role)
                 .status(UserStatus.ACTIVE)
                 .build();
@@ -87,6 +96,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new IllegalArgumentException("User not found with id: " + id));
 
+        if (userRepository.existsByEmployeeCodeAndIdNot(request.getEmployeeCode(), id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Employee code already exists");
+        }
+        if (userRepository.existsByEmailAndIdNot(request.getEmail(), id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");
+        }
+        String phone = normalizePhone(request.getPhone());
+        if (phone != null && userRepository.existsByPhoneAndIdNot(phone, id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone number already exists");
+        }
+
         Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() ->
                         new IllegalArgumentException("Role not found"));
@@ -95,13 +115,18 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPhone(request.getPhone());
+        user.setPhone(phone);
         user.setRole(role);
 
         User updatedUser = userRepository.save(user);
 
         return mapToResponse(updatedUser);
     }
+
+    private String normalizePhone(String phone) {
+        return phone == null || phone.isBlank() ? null : phone.trim();
+    }
+
     @Override
     @Transactional
     public UserResponse updateUserStatus(

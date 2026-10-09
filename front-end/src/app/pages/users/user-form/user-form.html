@@ -293,6 +293,10 @@
             </div>
 
 
+            @if (saveError) {
+                <p class="form-error" role="alert">{{ saveError }}</p>
+            }
+
             <div class="form-actions">
 
                 <button
@@ -308,10 +312,12 @@
                 <button
                     type="submit"
                     class="save-button"
-                    [disabled]="isLoading || !!loadError">
+                    [disabled]="isLoading || isSaving || !!loadError">
 
                     {{
-                        isEditMode
+                        isSaving
+                            ? 'Saving...'
+                            : isEditMode
                             ? 'Update User'
                             : 'Save User'
                     }}

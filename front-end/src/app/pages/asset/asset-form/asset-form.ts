@@ -30,7 +30,8 @@ export class AssetForm {
   formError = '';
   imageDataUrls: string[] = [];
   imageError = '';
-  readonly projects: Project[];
+  projects: Project[] = [];
+  projectLoadError = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +40,13 @@ export class AssetForm {
     private assetsService: AssetsService,
     private projectsService: ProjectsService
   ) {
-    this.projects = this.projectsService.getProjects();
+    this.projectsService.getProjects().subscribe({
+      next: projects => this.projects = projects,
+      error: error => {
+        console.error('Failed to load projects for asset form:', error);
+        this.projectLoadError = 'Project options could not be loaded.';
+      }
+    });
     this.assetForm = this.formBuilder.group({
       assetTag: ['', Validators.required],
       companyName: ['Internal', Validators.required],

@@ -4,7 +4,6 @@ export interface UserUpdateRequest {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phone: string | null;
   role: string;
-  status: string;
 }

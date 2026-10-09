@@ -10,6 +10,7 @@ import {
   ActivatedRoute,
   Router
 } from '@angular/router';
+import { of, switchMap } from 'rxjs';
 
 import { UsersService } from '../../../core/services/user/user';
 
@@ -33,7 +34,9 @@ export class UserForm {
 
   isEditMode = false;
   isLoading = false;
+  isSaving = false;
   loadError = '';
+  saveError = '';
 
 
   constructor(
@@ -139,7 +142,7 @@ export class UserForm {
 
   saveUser(): void {
 
-  if (this.isLoading || this.loadError) {
+  if (this.isLoading || this.isSaving || this.loadError) {
     return;
   }
 
@@ -153,27 +156,37 @@ export class UserForm {
   if (this.isEditMode && this.userId !== null) {
 
     const userUpdateRequest: UserUpdateRequest = {
-      employeeCode: formValue.employeeCode,
-      firstName: formValue.firstName,
-      lastName: formValue.lastName,
-      email: formValue.email,
-      phone: formValue.phone,
-      role: formValue.role,
-      status: formValue.status
+      employeeCode: formValue.employeeCode.trim(),
+      firstName: formValue.firstName.trim(),
+      lastName: formValue.lastName.trim(),
+      email: formValue.email.trim(),
+      phone: formValue.phone?.trim() || null,
+      role: formValue.role
     };
 
-    this.usersService.updateUser(
-      this.userId,
-      userUpdateRequest
+    this.isSaving = true;
+    this.saveError = '';
+    this.usersService.updateUser(this.userId, userUpdateRequest).pipe(
+      switchMap(updatedUser => {
+        const status = formValue.status;
+        return updatedUser.status === status
+          ? of(updatedUser)
+          : this.usersService.updateUserStatus(updatedUser.id, { status });
+      })
     ).subscribe({
 
       next: (response) => {
         console.log('User updated successfully:', response);
+        this.isSaving = false;
         this.router.navigate(['/users']);
       },
 
       error: (error) => {
         console.error('Failed to update user:', error);
+        this.saveError = error.status === 409
+          ? error.error?.detail || 'Employee code, email, or phone number is already in use.'
+          : 'Could not update the user. Please check the values and try again.';
+        this.isSaving = false;
       }
 
     });
@@ -201,6 +214,10 @@ export class UserForm {
 
       error: (error) => {
         console.error('Failed to create user:', error);
+        this.saveError = error.status === 409
+          ? error.error?.detail || 'Employee code, email, or phone number is already in use.'
+          : 'Could not create the user. Please check the values and try again.';
+        this.isSaving = false;
       }
 
     });

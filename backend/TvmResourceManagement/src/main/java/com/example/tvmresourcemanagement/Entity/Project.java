@@ -17,11 +17,20 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "project_code", nullable = false, unique = true)
-    private String projectCode;
-
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String companyName;
+
+    @Column(name = "developer_name")
+    private String projectDeveloper;
+
+    @Column(name = "voice_name")
+    private String projectVoice;
+
+    @Column(name = "manager_name")
+    private String manager;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -35,6 +44,5 @@ public class Project {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectStatus status;
-
 
 }

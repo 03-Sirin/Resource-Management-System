@@ -1,234 +1,92 @@
 <div class="project-form-page">
-
   <div class="page-header">
-
     <div>
       <h1>{{ isEditMode ? 'Edit Project' : 'Add Project' }}</h1>
-
-      <p>
-        {{ isEditMode
-          ? 'Update project information'
-          : 'Create a new project' }}
-      </p>
+      <p>{{ isEditMode ? 'Update project information' : 'Create a new project' }}</p>
     </div>
-
   </div>
 
   <div class="form-card">
+    @if (isLoading) {
+      <p role="status">Loading project details...</p>
+    }
 
-    <form
-      [formGroup]="projectForm"
-      (ngSubmit)="saveProject()">
-
+    <form [formGroup]="projectForm" (ngSubmit)="saveProject()">
       <div class="form-grid">
 
-        <!-- Project Name -->
         <div class="form-group">
-
-          <label for="name">Project Name *</label>
-
-          <input
-            id="name"
-            type="text"
-            formControlName="name"
-            placeholder="Enter project name"
-          />
-
-          @if (
-            projectForm.controls['name'].touched &&
-            projectForm.controls['name'].invalid
-          ) {
-            <small>Project name is required</small>
-          }
-
-        </div>
-
-
-        <!-- Company Name -->
-        <div class="form-group">
-
           <label for="companyName">Company Name *</label>
-
-          <input
-            id="companyName"
-            type="text"
-            formControlName="companyName"
-            placeholder="Enter company name"
-          />
-
-          @if (
-            projectForm.controls['companyName'].touched &&
-            projectForm.controls['companyName'].invalid
-          ) {
-            <small>Company name is required</small>
+          <input id="companyName" type="text" formControlName="companyName" placeholder="Enter company name" />
+          @if (projectForm.controls['companyName'].touched && projectForm.controls['companyName'].invalid) {
+            <small>Company name is required.</small>
           }
-
         </div>
 
-
-        <!-- Project Developer -->
         <div class="form-group">
+          <label for="projectDeveloper">Project Developer</label>
+          <input id="projectDeveloper" type="text" formControlName="projectDeveloper" placeholder="Enter developer name" />
+        </div>
 
-          <label for="projectDeveloper">Project Developer *</label>
+        <div class="form-group">
+          <label for="projectVoice">Project Voice</label>
+          <input id="projectVoice" type="text" formControlName="projectVoice" placeholder="Enter voice name" />
+        </div>
 
-          <input
-            id="projectDeveloper"
-            type="text"
-            formControlName="projectDeveloper"
-            placeholder="Enter project developer"
-          />
+        <div class="form-group">
+          <label for="manager">Project Manager</label>
+          <input id="manager" type="text" formControlName="manager" placeholder="Enter manager name" />
+        </div>
 
-          @if (
-            projectForm.controls['projectDeveloper'].touched &&
-            projectForm.controls['projectDeveloper'].invalid
-          ) {
-            <small>Project developer is required</small>
+        <div class="form-group">
+          <label for="name">Project Name *</label>
+          <input id="name" type="text" formControlName="name" placeholder="Enter project name" />
+          @if (projectForm.controls['name'].touched && projectForm.controls['name'].invalid) {
+            <small>Project name is required.</small>
           }
-
         </div>
 
-
-        <!-- Project Voice -->
-        <div class="form-group">
-
-          <label for="projectVoice">Project Voice *</label>
-
-          <input
-            id="projectVoice"
-            type="text"
-            formControlName="projectVoice"
-            placeholder="Enter project voice"
-          />
-
-          @if (
-            projectForm.controls['projectVoice'].touched &&
-            projectForm.controls['projectVoice'].invalid
-          ) {
-            <small>Project voice is required</small>
-          }
-
-        </div>
-
-
-        <!-- Manager -->
-        <div class="form-group">
-
-          <label for="manager">Project Manager *</label>
-
-          <input
-            id="manager"
-            type="text"
-            formControlName="manager"
-            placeholder="Enter project manager"
-          />
-
-          @if (
-            projectForm.controls['manager'].touched &&
-            projectForm.controls['manager'].invalid
-          ) {
-            <small>Project manager is required</small>
-          }
-
-        </div>
-
-
-        <!-- Status -->
-        <div class="form-group">
-
-          <label for="status">Status *</label>
-
-          <select
-            id="status"
-            formControlName="status">
-
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
-            <option value="Inactive">Inactive</option>
-
-          </select>
-
-        </div>
-
-
-        <!-- Description -->
         <div class="form-group full-width">
-
-          <label for="description">Description *</label>
-
-          <textarea
-            id="description"
-            formControlName="description"
-            placeholder="Enter project description">
-          </textarea>
-
-          @if (
-            projectForm.controls['description'].touched &&
-            projectForm.controls['description'].invalid
-          ) {
-            <small>Description is required</small>
-          }
-
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" placeholder="Enter project description"></textarea>
         </div>
 
-
-        <!-- Start Date -->
         <div class="form-group">
-
           <label for="startDate">Start Date *</label>
-
-          <input
-            id="startDate"
-            type="date"
-            formControlName="startDate"
-          />
-
-          @if (
-            projectForm.controls['startDate'].touched &&
-            projectForm.controls['startDate'].invalid
-          ) {
-            <small>Start date is required</small>
+          <input id="startDate" type="date" formControlName="startDate" />
+          @if (projectForm.controls['startDate'].touched && projectForm.controls['startDate'].invalid) {
+            <small>Start date is required.</small>
           }
-
         </div>
 
-
-        <!-- End Date -->
         <div class="form-group">
-
           <label for="endDate">End Date</label>
-
-          <input
-            id="endDate"
-            type="date"
-            formControlName="endDate"
-          />
-
-          <!-- <small>Optional</small> -->
-
+          <input id="endDate" type="date" formControlName="endDate" />
+          @if (projectForm.controls['endDate'].touched && needsEndDate) {
+            <small>An end date is required for a completed project.</small>
+          }
         </div>
 
+        <div class="form-group">
+          <label for="status">Status *</label>
+          <select id="status" formControlName="status">
+            <option value="ACTIVE">Active</option>
+            <option value="ON_HOLD">On Hold</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
       </div>
 
+      @if (formError) {
+        <p role="alert" class="form-error">{{ formError }}</p>
+      }
 
       <div class="form-actions">
-
-        <button
-          type="button"
-          class="cancel-button"
-          (click)="cancel()">
-          Cancel
+        <button type="button" class="cancel-button" (click)="cancel()">Cancel</button>
+        <button type="submit" class="save-button" [disabled]="isLoading || isSaving || (isEditMode && !project)">
+          {{ isSaving ? 'Saving...' : (isEditMode ? 'Update Project' : 'Save Project') }}
         </button>
-
-        <button
-          type="submit"
-          class="save-button">
-          {{ isEditMode ? 'Update Project' : 'Save Project' }}
-        </button>
-
       </div>
-
     </form>
-
   </div>
-
 </div>

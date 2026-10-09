@@ -21,17 +21,23 @@ export class AssetList implements OnInit {
   selectedStatus = 'All';
   selectedDeviceType = 'All';
   selectedProject = 'All';
-  readonly projects: Project[];
+  projects: Project[] = [];
+  projectLoadError = '';
 
   constructor(
     private assetsService: AssetsService,
     private projectsService: ProjectsService
-  ) {
-    this.projects = this.projectsService.getProjects();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadAssets();
+    this.projectsService.getProjects().subscribe({
+      next: projects => this.projects = projects,
+      error: error => {
+        console.error('Failed to load projects for asset filters:', error);
+        this.projectLoadError = 'Project filter options could not be loaded.';
+      }
+    });
   }
 
   loadAssets(): void {

@@ -27,7 +27,7 @@ public class UserController {
         return userService.createUser(request);
     }
     @GetMapping("/{id}")
-    public UserResponse getUserById(@PathVariable Long id) {
+    public UserResponse getUserById(@PathVariable("id") Long id) {
         return userService.getUserById(id);
     }
     @GetMapping
@@ -36,14 +36,14 @@ public class UserController {
     }
     @PutMapping("/{id}")
     public UserResponse updateUser(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody UserUpdateRequest request) {
 
         return userService.updateUser(id, request);
     }
     @PatchMapping("/{id}/status")
     public UserResponse updateUserStatus(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody UserStatusUpdateRequest request) {
 
         return userService.updateUserStatus(id, request);

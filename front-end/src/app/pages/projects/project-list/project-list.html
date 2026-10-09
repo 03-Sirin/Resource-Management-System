@@ -19,7 +19,7 @@
     <input
       type="search"
       [(ngModel)]="searchText"
-      placeholder="Search by project, company, developer or manager"
+      placeholder="Search by project code, name or description"
       aria-label="Search projects" />
   </div>
 
@@ -31,8 +31,8 @@
         <tr>
           <th>Project Name</th>
           <th>Company Name</th>
-          <th>Developer</th>
-          <th>Voice</th>
+          <th>Project Developer</th>
+          <th>Project Voice</th>
           <th>Manager</th>
           <th>Start Date</th>
           <th>End Date</th>
@@ -49,13 +49,13 @@
 
             <td>{{ project.name }}</td>
 
-            <td>{{ project.companyName}}</td>
-            
-            <td>{{ project.projectDeveloper }}</td>
+            <td>{{ project.companyName }}</td>
 
-            <td>{{ project.projectVoice }}</td>
+            <td>{{ project.projectDeveloper || '-' }}</td>
 
-            <td>{{ project.manager }}</td>
+            <td>{{ project.projectVoice || '-' }}</td>
+
+            <td>{{ project.manager || '-' }}</td>
 
             <td>{{ project.startDate }}</td>
 
@@ -66,10 +66,10 @@
             <td>
               <span
                 class="status"
-                [class.active]="project.status === 'Active'"
-                [class.completed]="project.status === 'Completed'">
+                [class.active]="project.status === 'ACTIVE'"
+                [class.completed]="project.status === 'COMPLETED'">
 
-                {{ project.status }}
+                {{ statusLabel(project.status) }}
 
               </span>
             </td>
@@ -92,7 +92,15 @@
 
         } @empty {
           <tr>
-            <td colspan="10" class="empty-state">No projects match your search.</td>
+            <td colspan="9" class="empty-state">
+              @if (isLoading()) {
+                <span role="status">Loading projects...</span>
+              } @else if (loadError()) {
+                <span role="alert">{{ loadError() }}</span>
+              } @else {
+                No projects match your search.
+              }
+            </td>
           </tr>
         }
 

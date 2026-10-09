@@ -17,6 +17,9 @@
 
 
    <div class="filters">
+     @if (projectLoadError) {
+       <p role="alert">{{ projectLoadError }}</p>
+     }
 
   <input
     type="text"
