@@ -26,9 +26,14 @@ public class ProjectServiceImpl implements ProjectService {
             throw new RuntimeException("Project code already exists");
         }
 
+        validateDateRange(request.getStartDate(), request.getEndDate());
+
         Project project = Project.builder()
                 .projectCode(request.getProjectCode())
                 .name(request.getName())
+                .projectDeveloper(request.getProjectDeveloper())
+                .projectVoice(request.getProjectVoice())
+                .manager(request.getManager())
                 .description(request.getDescription())
                 .startDate(request.getStartDate())
                 .endDate(null)
@@ -72,6 +77,9 @@ public class ProjectServiceImpl implements ProjectService {
 
         project.setProjectCode(request.getProjectCode());
         project.setName(request.getName());
+        project.setProjectDeveloper(request.getProjectDeveloper());
+        project.setProjectVoice(request.getProjectVoice());
+        project.setManager(request.getManager());
         project.setDescription(request.getDescription());
         project.setStartDate(request.getStartDate());
         if (project.getStatus() == ProjectStatus.COMPLETED && request.getEndDate() == null) {
@@ -81,6 +89,8 @@ public class ProjectServiceImpl implements ProjectService {
         project.setEndDate(project.getStatus() == ProjectStatus.COMPLETED
                 ? request.getEndDate()
                 : null);
+
+        validateDateRange(project.getStartDate(), project.getEndDate());
 
         return mapToResponse(projectRepository.save(project));
     }
@@ -95,7 +105,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectStatus projectStatus;
 
         try {
-            projectStatus = ProjectStatus.valueOf(status.toUpperCase());
+            projectStatus = ProjectStatus.fromValue(status);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid project status: " + status);
         }
@@ -104,6 +114,7 @@ public class ProjectServiceImpl implements ProjectService {
             if (endDate == null) {
                 throw new IllegalArgumentException("End date is required when completing a project");
             }
+            validateDateRange(project.getStartDate(), endDate);
             project.setEndDate(endDate);
         } else {
             project.setEndDate(null);
@@ -119,10 +130,19 @@ public class ProjectServiceImpl implements ProjectService {
                 .id(project.getId())
                 .projectCode(project.getProjectCode())
                 .name(project.getName())
+                .projectDeveloper(project.getProjectDeveloper())
+                .projectVoice(project.getProjectVoice())
+                .manager(project.getManager())
                 .description(project.getDescription())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
                 .status(project.getStatus())
                 .build();
+    }
+
+    private void validateDateRange(LocalDate startDate, LocalDate endDate) {
+        if (endDate != null && endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date cannot be before start date");
+        }
     }
 }

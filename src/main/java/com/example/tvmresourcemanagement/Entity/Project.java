@@ -23,6 +23,15 @@ public class Project {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "project_developer", nullable = false)
+    private String projectDeveloper;
+
+    @Column(name = "project_voice", nullable = false)
+    private String projectVoice;
+
+    @Column(nullable = false)
+    private String manager;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 

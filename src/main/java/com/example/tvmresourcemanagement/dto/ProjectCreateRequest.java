@@ -15,6 +15,15 @@ public class ProjectCreateRequest {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String projectDeveloper;
+
+    @NotBlank
+    private String projectVoice;
+
+    @NotBlank
+    private String manager;
+
     private String description;
 
     @NotNull
