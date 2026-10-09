@@ -1,6 +1,7 @@
 package com.example.tvmresourcemanagement.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,14 +13,14 @@ import java.time.LocalDate;
 @Builder
 public class ProjectCreateRequest {
 
-    @NotBlank(message = "Project code is required")
-    private String projectCode;
-
     @NotBlank(message = "Project name is required")
     private String name;
 
+    @NotBlank(message = "Company name is required")
+    private String companyName;
+
     private String description;
 
-    @NotBlank(message = "Start date is required")
+    @NotNull(message = "Start date is required")
     private LocalDate startDate;
 }

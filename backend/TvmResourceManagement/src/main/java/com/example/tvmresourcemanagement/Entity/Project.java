@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 @Entity
 @Table(name = "projects")
 @Getter
@@ -17,11 +18,14 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "project_code", nullable = false, unique = true)
-    private String projectCode;
+    @Column(name = "project_code", nullable = false, unique = true, updatable = false)
+    private String internalReference;
 
     @Column(nullable = false)
     private String name;
+
+    @Column(name = "company_name", nullable = false)
+    private String companyName;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -36,5 +40,11 @@ public class Project {
     @Column(nullable = false)
     private ProjectStatus status;
 
+    @PrePersist
+    private void assignInternalReference() {
+        if (internalReference == null) {
+            internalReference = UUID.randomUUID().toString();
+        }
+    }
 
 }

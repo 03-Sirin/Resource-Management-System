@@ -22,13 +22,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponse createProject(ProjectCreateRequest request) {
 
-        if (projectRepository.existsByProjectCode(request.getProjectCode())) {
-            throw new RuntimeException("Project code already exists");
-        }
-
         Project project = Project.builder()
-                .projectCode(request.getProjectCode())
                 .name(request.getName())
+                .companyName(request.getCompanyName())
                 .description(request.getDescription())
                 .startDate(request.getStartDate())
                 .endDate(null)
@@ -65,13 +61,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() ->
                         new RuntimeException("Project not found with id: " + id));
 
-        if (!project.getProjectCode().equals(request.getProjectCode())
-                && projectRepository.existsByProjectCode(request.getProjectCode())) {
-            throw new RuntimeException("Project code already exists");
-        }
-
-        project.setProjectCode(request.getProjectCode());
         project.setName(request.getName());
+        project.setCompanyName(request.getCompanyName());
         project.setDescription(request.getDescription());
         project.setStartDate(request.getStartDate());
         if (project.getStatus() == ProjectStatus.COMPLETED && request.getEndDate() == null) {
@@ -117,8 +108,8 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectResponse mapToResponse(Project project) {
         return ProjectResponse.builder()
                 .id(project.getId())
-                .projectCode(project.getProjectCode())
                 .name(project.getName())
+                .companyName(project.getCompanyName())
                 .description(project.getDescription())
                 .startDate(project.getStartDate())
                 .endDate(project.getEndDate())
