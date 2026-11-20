@@ -44,7 +44,7 @@ export class AssetForm implements OnInit {
       companyName: ['Internal', Validators.required],
       deviceType: ['', Validators.required],
       receivedDate: ['', Validators.required],
-      status: ['Available', Validators.required],
+      status: ['AVAILABLE', Validators.required],
       assignedTo: [''],
       project: ['']
     });
@@ -106,6 +106,12 @@ export class AssetForm implements OnInit {
       return;
     }
 
+        if (this.imageDataUrls.length + files.length > 5) {
+      this.imageError = 'You can upload a maximum of 5 images.';
+      input.value = '';
+      return;
+    }
+
     if (files.some(file => file.size > AssetForm.maxImageSizeBytes)) {
       this.imageError = 'Each image must be 5 MB or smaller.';
       input.value = '';
@@ -151,6 +157,17 @@ export class AssetForm implements OnInit {
     if (this.assetForm.invalid) {
       this.assetForm.markAllAsTouched();
       this.formError = 'Please complete all required fields before saving.';
+      return;
+    }
+
+    if (this.imageDataUrls.length === 0) {
+      this.imageError = 'Please upload at least 1 asset image.';
+      this.formError = 'At least 1 asset image is required.';
+      return;
+    }
+    if (this.imageDataUrls.length > 5) {
+      this.imageError = 'You cannot upload more than 5 images.';
+      this.formError = 'Maximum of 5 images allowed.';
       return;
     }
 

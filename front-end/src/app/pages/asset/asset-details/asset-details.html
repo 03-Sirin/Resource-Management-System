@@ -43,7 +43,7 @@
         <span class="label">Project</span>
         <span class="value">{{ asset.project || '-' }}</span>
       </div>
-      @if (asset.imageUrls?.length) {
+      @if (asset.imageUrls && asset.imageUrls.length>0) {
         <div class="detail-item full-width">
           <span class="label">Asset Images</span>
           <div class="asset-images">

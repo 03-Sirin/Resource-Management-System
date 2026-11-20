@@ -15,8 +15,11 @@
 
     <div class="user-section">
 
-        <span>Welcome, Admin</span>
-
+        @if(authService.currentUser(); as user) {
+        <span>Welcome, {{ user.firstName }} {{ user.lastName }}</span>}
+        @else {
+            <span>Welcome, Guest</span>
+        }
         <button type="button" (click)="logout()">Logout</button>
 
     </div>

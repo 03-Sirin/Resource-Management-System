@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -15,13 +15,13 @@ import { Project } from '../../../core/models/project.interface';
 })
 export class AssetList implements OnInit {
 
-  assets: Asset[] = [];
+  assets=signal<Asset[]>([]);
 
   searchText = '';
   selectedStatus = 'All';
   selectedDeviceType = 'All';
   selectedProject = 'All';
-  projects: Project[] = [];
+  projects=signal< Project[]>([]);
 
   constructor(
     private assetsService: AssetsService,
@@ -36,14 +36,16 @@ export class AssetList implements OnInit {
 
   loadProjects(): void {
   this.projectsService.getProjects().subscribe({
-    next: (projects) => this.projects = projects,
+    next: (projects) => this.projects.set(projects),
     error: (err) => console.error('Failed to load projects in asset-list', err)
   });
 }
 
   loadAssets(): void {
     this.assetsService.getAssets().subscribe({
-      next: assets => this.assets = assets,
+      next: assets => {
+        console.log('>>> Assets received from backend:', assets);
+        this.assets.set(assets)},
       error: error => console.error('Failed to load assets:', error)
     });
   }
@@ -54,7 +56,9 @@ export class AssetList implements OnInit {
     .toLowerCase()
     .trim();
 
-  return this.assets.filter(asset => {
+  const allAssets = this.assets();  
+
+  return allAssets.filter(asset => {
 
     const matchesSearch = [
       asset.assetTag,
@@ -62,7 +66,7 @@ export class AssetList implements OnInit {
       asset.deviceType,
       asset.assignedTo ?? '',
       asset.project ?? ''
-    ].some(value => value.toLowerCase().includes(search));
+    ].some(value => value?value.toLowerCase().includes(search) : false);
 
     const matchesStatus =
       this.selectedStatus === 'All' ||
