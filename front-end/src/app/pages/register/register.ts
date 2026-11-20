@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink,Router } from '@angular/router';
 
 import { AuthService } from '../../core/services/auth';
 
@@ -29,14 +29,14 @@ const matchingPasswords: ValidatorFn = (
 export class Register {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
-
+  private readonly router = inject(Router);
   readonly registerForm = this.fb.group(
     {
       employeeCode: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: [''],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['',Validators.required,Validators.pattern(/^[0-9]{10}$/)],
+      phone: ['',[Validators.required,Validators.pattern(/^[0-9]{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
     },
@@ -72,6 +72,7 @@ export class Register {
       next: () => {
         this.isSubmitting = false;
         this.isRegistered = true;
+        this.router.navigate(['/login']);
       },
       error: (error: unknown) => {
         this.isSubmitting = false;

@@ -98,7 +98,24 @@ export const routes: Routes = [
                     import('./pages/projects/project-details/project-details')
                         .then(m => m.ProjectDetails)
             },
-
+                        {
+                path: 'requests',
+                loadComponent: () =>
+                    import('./pages/requests/request-list/request-list')
+                        .then(m => m.RequestList)
+            },
+            {
+                path: 'requests/add',
+                loadComponent: () =>
+                    import('./pages/requests/request-form/request-form')
+                        .then(m => m.RequestForm)
+            },
+                        {
+                path: 'requests/:id/allocate',
+                loadComponent: () =>
+                    import('./pages/requests/request-allocate/request-allocate')
+                        .then(m => m.RequestAllocate)
+            },
 
         ]
     },

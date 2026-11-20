@@ -1,0 +1,99 @@
+<div class="request-form-page">
+  <div class="page-header">
+    <div>
+      <h1>Request a Device</h1>
+      <p>Submit a hardware or equipment request for your project</p>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="requestForm" (ngSubmit)="saveRequest()">
+      <div class="form-grid">
+        <!-- Project Dropdown -->
+        <div class="form-group">
+          <label for="projectId">Project *</label>
+          <select id="projectId" formControlName="projectId">
+            <option value="" disabled>Select a project</option>
+            @for (project of projects(); track project.id) {
+              <option [value]="project.id">{{ project.name }} ({{ project.companyName }})</option>
+            }
+          </select>
+          @if (requestForm.controls['projectId'].touched && requestForm.controls['projectId'].invalid) {
+            <small>Please select a project</small>
+          }
+        </div>
+
+        <!-- Device Type Dropdown -->
+        <div class="form-group">
+          <label for="deviceType">Device Type *</label>
+          <select id="deviceType" formControlName="deviceType">
+            <option value="Laptop">Laptop</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Mobile Phone">Mobile Phone</option>
+            <option value="Keyboard">Keyboard</option>
+            <option value="Mouse">Mouse</option>
+            <option value="Headset">Headset</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- Priority Dropdown -->
+        <div class="form-group">
+          <label for="priority">Priority *</label>
+          <select id="priority" formControlName="priority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+            <option value="CRITICAL">Critical</option>
+          </select>
+        </div>
+
+        <!-- Required Date -->
+        <div class="form-group">
+          <label for="requiredDate">Needed By Date *</label>
+          <input id="requiredDate" type="date" formControlName="requiredDate" />
+          @if (requestForm.controls['requiredDate'].touched && requestForm.controls['requiredDate'].invalid) {
+            <small>Needed date is required</small>
+          }
+        </div>
+
+        <!-- Specifications -->
+        <div class="form-group full-width">
+          <label for="specifications">Device Specifications (Optional)</label>
+          <input
+            id="specifications"
+            type="text"
+            formControlName="specifications"
+            placeholder="e.g. 16GB RAM, 512GB SSD, M2 or Core i7"
+          />
+        </div>
+
+        <!-- Reason -->
+        <div class="form-group full-width">
+          <label for="reason">Reason / Business Justification *</label>
+          <textarea
+            id="reason"
+            rows="3"
+            formControlName="reason"
+            placeholder="Why is this resource required for the project?"
+          ></textarea>
+          @if (requestForm.controls['reason'].touched && requestForm.controls['reason'].invalid) {
+            <small>Reason is required</small>
+          }
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="form-actions">
+        <button class="cancel-button" type="button" (click)="cancel()">Cancel</button>
+        <button class="save-button" type="submit" [disabled]="isSaving()">
+          {{ isSaving() ? 'Submitting...' : 'Submit Request' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

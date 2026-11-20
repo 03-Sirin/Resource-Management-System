@@ -45,7 +45,7 @@
 </div>
 
   <p class="asset-count" aria-live="polite">
-    Showing {{ filteredAssets.length }} of {{ assets.length }} assets
+    Showing {{ filteredAssets.length }} of {{ assets().length }} assets
   </p>
 
   <div class="table-container">
@@ -65,7 +65,7 @@
             <select id="projectFilter" class="project-filter" [(ngModel)]="selectedProject" aria-label="Filter assets by project">
               <option value="All">All Projects</option>
               <option value="Unassigned">Unassigned</option>
-              @for (project of projects; track project.id) {
+              @for (project of projects(); track project.id) {
                 <option [value]="project.name">{{ project.name }}</option>
               }
             </select>

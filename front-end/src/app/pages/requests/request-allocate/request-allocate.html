@@ -1,0 +1,106 @@
+<div class="allocate-page">
+  <div class="page-header">
+    <div>
+      <h1>Allocate Asset</h1>
+      <p>Assign a physical device to an approved request</p>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">Loading request and inventory...</div>
+  } @else if (request(); as req) {
+    <!-- Request Summary Card -->
+    <div class="summary-card">
+      <h2>Request Summary</h2>
+      <div class="summary-grid">
+        <div>
+          <span class="label">Request #</span>
+          <span class="val"><strong>{{ req.requestNumber }}</strong></span>
+        </div>
+        <div>
+          <span class="label">Requester</span>
+          <span class="val">{{ req.requesterName }} ({{ req.requesterEmail }})</span>
+        </div>
+        <div>
+          <span class="label">Project</span>
+          <span class="val">{{ req.projectName }}</span>
+        </div>
+        <div>
+          <span class="label">Requested Device</span>
+          <span class="val font-semibold">{{ req.deviceType }}</span>
+        </div>
+        <div>
+          <span class="label">Priority</span>
+          <span class="val">{{ req.priority }}</span>
+        </div>
+        <div>
+          <span class="label">Needed By</span>
+          <span class="val">{{ req.requiredDate }}</span>
+        </div>
+        @if (req.specifications) {
+          <div class="full-width">
+            <span class="label">Specifications</span>
+            <span class="val">{{ req.specifications }}</span>
+          </div>
+        }
+        <div class="full-width">
+          <span class="label">Reason</span>
+          <span class="val">{{ req.reason }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Allocation Form -->
+    <div class="form-card">
+      <h2>Select Device from Inventory</h2>
+
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <form [formGroup]="allocateForm" (ngSubmit)="confirmAllocation()">
+        <div class="form-group">
+          <label for="assetId">Available {{ req.deviceType }}s *</label>
+          <select id="assetId" formControlName="assetId">
+            <option value="" disabled>Select an available asset</option>
+            @for (asset of availableAssets(); track asset.id) {
+              <option [value]="asset.id">
+                {{ asset.assetTag }} - {{ asset.companyName }} (Received: {{ asset.receivedDate }})
+              </option>
+            }
+          </select>
+
+          @if (availableAssets().length === 0) {
+            <small class="warn-text">
+              ⚠️ No available {{ req.deviceType }}s found in inventory with status 'AVAILABLE'. Please add or return one in the Assets module first.
+            </small>
+          }
+          @if (allocateForm.controls['assetId'].touched && allocateForm.controls['assetId'].invalid) {
+            <small class="error-text">Please select an asset to allocate</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="adminComments">Admin Remarks / Handover Notes (Optional)</label>
+          <textarea
+            id="adminComments"
+            rows="2"
+            formControlName="adminComments"
+            placeholder="e.g. Device handed over to employee with charger and adapter"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="cancel-button" type="button" (click)="cancel()">Cancel</button>
+          <button
+            class="save-button"
+            type="submit"
+            [disabled]="isSubmitting() || availableAssets().length === 0"
+          >
+            {{ isSubmitting() ? 'Allocating...' : 'Confirm Allocation' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</div>
