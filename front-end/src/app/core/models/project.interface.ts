@@ -4,7 +4,7 @@ export interface Project {
   companyName: string;
   projectDeveloper: string;
   projectVoice:string;
-  description: string;
+  description?: string | null;
   startDate: string;
   endDate: string | null;
   status: string;

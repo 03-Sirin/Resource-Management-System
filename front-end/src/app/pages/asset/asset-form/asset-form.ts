@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -18,7 +18,7 @@ import { Project } from '../../../core/models/project.interface';
   templateUrl: './asset-form.html',
   styleUrl: './asset-form.css',
 })
-export class AssetForm {
+export class AssetForm implements OnInit {
   private static readonly maxImageSizeBytes = 5 * 1024 * 1024;
 
   readonly assetForm: FormGroup;
@@ -30,7 +30,7 @@ export class AssetForm {
   formError = '';
   imageDataUrls: string[] = [];
   imageError = '';
-  readonly projects: Project[];
+  projects: Project[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +39,6 @@ export class AssetForm {
     private assetsService: AssetsService,
     private projectsService: ProjectsService
   ) {
-    this.projects = this.projectsService.getProjects();
     this.assetForm = this.formBuilder.group({
       assetTag: ['', Validators.required],
       companyName: ['Internal', Validators.required],
@@ -76,6 +75,17 @@ export class AssetForm {
         }
       });
     }
+  }
+
+      ngOnInit(): void {
+    this.projectsService.getProjects().subscribe({
+      next: (projects) => {
+        this.projects = projects;
+      },
+      error: (err) => {
+        console.error('Failed to load projects in asset-form:', err);
+      }
+    });
   }
 
   async onImagesSelected(event: Event): Promise<void> {
