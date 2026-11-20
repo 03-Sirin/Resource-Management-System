@@ -1,0 +1,108 @@
+<div class="request-page">
+  <div class="page-header">
+    <div>
+      <h1>Resource Requests</h1>
+      <p>Manage and track hardware and device requests</p>
+    </div>
+    @if(authService.currentUser()?.role !== 'ADMIN'){
+        <button class="add-button" routerLink="/requests/add">
+      + New Request
+    </button>
+    }
+  </div>
+
+  <div class="filters">
+    <input
+      type="search"
+      [(ngModel)]="searchText"
+      placeholder="Search by request #, employee, project, or device"
+      aria-label="Search requests"
+    />
+
+    <select [(ngModel)]="selectedStatus">
+      <option value="All">All Statuses</option>
+      <option value="PENDING">Pending</option>
+      <option value="APPROVED">Approved</option>
+      <option value="ALLOCATED">Allocated</option>
+      <option value="REJECTED">Rejected</option>
+      <option value="CANCELLED">Cancelled</option>
+    </select>
+  </div>
+
+  <p class="count" aria-live="polite">
+    Showing {{ filteredRequests.length }} of {{ requests().length }} requests
+  </p>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Request #</th>
+          <th>Requester</th>
+          <th>Project</th>
+          <th>Device Type</th>
+          <th>Priority</th>
+          <th>Needed By</th>
+          <th>Status</th>
+          <th>Allocated Asset</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td colspan="9" class="empty-state">Loading requests...</td>
+          </tr>
+        } @else {
+          @for (req of filteredRequests; track req.id) {
+            <tr>
+              <td><strong>{{ req.requestNumber }}</strong></td>
+              <td>{{ req.requesterName }}</td>
+              <td>{{ req.projectName }}</td>
+              <td>{{ req.deviceType }}</td>
+              <td>
+                <span class="badge priority" [class]="req.priority.toLowerCase()">
+                  {{ req.priority }}
+                </span>
+              </td>
+              <td>{{ req.requiredDate }}</td>
+              <td>
+                <span class="badge status" [class]="req.status.toLowerCase()">
+                  {{ req.status }}
+                </span>
+              </td>
+              <td>
+                @if (req.allocatedAssetTag) {
+                  <span class="asset-tag">{{ req.allocatedAssetTag }} ({{ req.allocatedDeviceType }})</span>
+                } @else {
+                  <span class="text-muted">-</span>
+                }
+              </td>
+              <td class="actions">
+                <!-- If Employee & PENDING -> Can Cancel -->
+                @if (req.status === 'PENDING') {
+                  <button class="btn-cancel" (click)="cancelRequest(req.id)">Cancel</button>
+                }
+
+                <!-- If Admin & PENDING -> Can Approve or Reject -->
+                @if (authService.currentUser()?.role === 'ADMIN' && req.status === 'PENDING') {
+                  <button class="btn-approve" (click)="approveRequest(req.id)">Approve</button>
+                  <button class="btn-reject" (click)="rejectRequest(req.id)">Reject</button>
+                }
+
+                <!-- If Admin & APPROVED -> Can Allocate an Asset -->
+                @if (authService.currentUser()?.role === 'ADMIN' && req.status === 'APPROVED') {
+                  <button class="btn-allocate" [routerLink]="['/requests', req.id, 'allocate']">Allocate</button>
+                }
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="9" class="empty-state">No resource requests found.</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
