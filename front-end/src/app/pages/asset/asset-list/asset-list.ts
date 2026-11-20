@@ -21,18 +21,25 @@ export class AssetList implements OnInit {
   selectedStatus = 'All';
   selectedDeviceType = 'All';
   selectedProject = 'All';
-  readonly projects: Project[];
+  projects: Project[] = [];
 
   constructor(
     private assetsService: AssetsService,
     private projectsService: ProjectsService
   ) {
-    this.projects = this.projectsService.getProjects();
   }
 
   ngOnInit(): void {
     this.loadAssets();
+    this.loadProjects();
   }
+
+  loadProjects(): void {
+  this.projectsService.getProjects().subscribe({
+    next: (projects) => this.projects = projects,
+    error: (err) => console.error('Failed to load projects in asset-list', err)
+  });
+}
 
   loadAssets(): void {
     this.assetsService.getAssets().subscribe({

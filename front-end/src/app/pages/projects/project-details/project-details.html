@@ -15,7 +15,7 @@
         Back
       </button>
 
-      @if (project) {
+      @if (project(); as project) {
         <a
           class="edit-button"
           [routerLink]="['/projects/edit', project.id]">
@@ -26,71 +26,49 @@
     </div>
 
   </div>
-
-
-  @if (project) {
-
-    <div class="details-card">
-
-  <div class="detail-item">
-    <span class="label">Project Name</span>
-    <span class="value">{{ project.name }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Company Name</span>
-    <span class="value">{{ project.companyName }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Project Developer</span>
-    <span class="value">{{ project.projectDeveloper }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Project Voice</span>
-    <span class="value">{{ project.projectVoice }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Project Manager</span>
-    <span class="value">{{ project.manager }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Status</span>
-
-    <span
-      class="status"
-      [class.active]="project.status === 'Active'"
-      [class.completed]="project.status === 'Completed'">
-      {{ project.status }}
-    </span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">Start Date</span>
-    <span class="value">{{ project.startDate }}</span>
-  </div>
-
-  <div class="detail-item">
-    <span class="label">End Date</span>
-    <span class="value">{{ project.endDate || '-' }}</span>
-  </div>
-
-  <div class="detail-item full-width">
-    <span class="label">Description</span>
-    <span class="value">{{ project.description }}</span>
-  </div>
-
-</div>
-
-  } @else {
-
-    <div class="not-found">
-      Project not found.
+   @if (isLoading()) {
+  <div class="loading">Loading project details...</div>
+} @else if (project(); as p) {
+  <div class="details-card">
+    <div class="detail-item">
+      <span class="label">Project Name</span>
+      <span class="value">{{ p.name }}</span>
     </div>
-
-  }
+    <div class="detail-item">
+      <span class="label">Company Name</span>
+      <span class="value">{{ p.companyName }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Project Developer</span>
+      <span class="value">{{ p.projectDeveloper }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Project Voice</span>
+      <span class="value">{{ p.projectVoice }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Project Manager</span>
+      <span class="value">{{ p.manager }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Status</span>
+      <span class="status">{{ p.status }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Start Date</span>
+      <span class="value">{{ p.startDate }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">End Date</span>
+      <span class="value">{{ p.endDate || '-' }}</span>
+    </div>
+    <div class="detail-item full-width">
+      <span class="label">Description</span>
+      <span class="value">{{ p.description }}</span>
+    </div>
+  </div>
+} @else {
+  <div class="not-found">Project not found.</div>
+}
 
 </div>

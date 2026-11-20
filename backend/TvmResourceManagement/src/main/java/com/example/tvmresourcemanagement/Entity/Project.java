@@ -17,11 +17,17 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "project_code", nullable = false, unique = true)
-    private String projectCode;
-
     @Column(nullable = false)
     private String name;
+
+    @Column(name = "company_name")
+    private String companyName;
+    @Column(name = "project_developer")
+    private String projectDeveloper;
+    @Column(name = "project_voice")
+    private String projectVoice;
+    @Column(name = "manager")
+    private String manager;
 
     @Column(columnDefinition = "TEXT")
     private String description;
